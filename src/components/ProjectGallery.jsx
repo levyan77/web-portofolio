@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Float, ContactShadows, Environment, Html } from '@react-three/drei';
+import { OrbitControls, Text, Float, ContactShadows, Environment, Html, useTexture } from '@react-three/drei';
 
 import * as THREE from 'three';
 
@@ -25,6 +25,7 @@ const projectsData = [
     description: "Proyek front-end yang dibuat menggunakan Nuxt.js (Vue.js framework) untuk Alterra Academy. Menggunakan Hasura GraphQL dan NewsAPI untuk mengambil data berita gaming dan statistik karakter.",
     link: "https://github.com/levyan77/miniProjectAlta",
     demo: "https://miniprojectalta.vercel.app",
+    image: "./alta-preview.png",
     color: "#dc2626", // Red
   },
   {
@@ -99,44 +100,64 @@ const ProjectCard3D = ({ project, index, total, onClick }) => {
           castShadow
           position={[0, 1.5, 0]}
         >
-          {/* A Box resembling a Monolith/Screen */}
-          <boxGeometry args={[2.5, 3.5, 0.2]} />
+          {/* A Box resembling a TV / Screen */}
+          <boxGeometry args={project.size || [3.8, 2.4, 0.2]} />
           {/* Persona style bright materials */}
           <meshStandardMaterial color={project.color} roughness={0.2} metalness={0.5} />
           
-          {/* Tampilan layarnya */}
+          {/* Layar Hitam Dasar (DEPAN) */}
           <mesh position={[0, 0, 0.1]}>
-            <planeGeometry args={[2.3, 3.3]} />
+            <planeGeometry args={project.screenSize || [3.6, 2.2]} />
+            <meshBasicMaterial color="#111" />
+          </mesh>
+          {/* Layar Hitam Dasar (BELAKANG) */}
+          <mesh position={[0, 0, -0.1]} rotation={[0, Math.PI, 0]}>
+            <planeGeometry args={project.screenSize || [3.6, 2.2]} />
             <meshBasicMaterial color="#111" />
           </mesh>
 
-          {/* Jika ada link demo, tampilkan Iframe Live Website! */}
-          {project.demo ? (
-            <group position={[0, 0.2, 0.12]} scale={0.004}>
-              <Html
-                transform
-                occlude
-                className="pointer-events-none" 
-              >
-                <div className="w-[500px] h-[600px] bg-white rounded-lg overflow-hidden border-8 border-[var(--color-persona-yellow)] shadow-lg" style={{ pointerEvents: 'none' }}>
-                  <iframe 
-                    src={project.demo} 
-                    className="w-full h-full border-none pointer-events-none" 
-                    title={project.title}
-                  />
-                </div>
-              </Html>
-            </group>
+          {/* Jika ada gambar preview, tampilkan sebagai layar TV (DEPAN & BELAKANG) */}
+          {project.image ? (
+            <>
+              <mesh position={[0, 0, 0.11]}>
+                <planeGeometry args={project.screenSize || [3.6, 2.2]} />
+                <meshBasicMaterial map={useTexture(project.image)} />
+              </mesh>
+              <mesh position={[0, 0, -0.11]} rotation={[0, Math.PI, 0]}>
+                <planeGeometry args={project.screenSize || [3.6, 2.2]} />
+                <meshBasicMaterial map={useTexture(project.image)} />
+              </mesh>
+            </>
           ) : null}
 
-          {/* Title Text */}
+          {/* Nameplate Base (Papan nama hitam di atas TV) */}
+          <mesh position={[0, 1.5, 0]}>
+            <boxGeometry args={[3.6, 0.4, 0.1]} />
+            <meshBasicMaterial color="#111" />
+          </mesh>
+
+          {/* Title Text (DEPAN) */}
           <Text
-            position={[0, project.demo ? -1.35 : 0, 0.12]}
-            fontSize={project.demo ? 0.22 : 0.35}
+            position={[0, 1.5, 0.06]}
+            fontSize={0.25}
             color="white"
             anchorX="center"
             anchorY="middle"
-            maxWidth={2.2}
+            maxWidth={3.5}
+            textAlign="center"
+          >
+            {project.title.toUpperCase()}
+          </Text>
+
+          {/* Title Text (BELAKANG) */}
+          <Text
+            position={[0, 1.5, -0.06]}
+            rotation={[0, Math.PI, 0]}
+            fontSize={0.25}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+            maxWidth={3.5}
             textAlign="center"
           >
             {project.title.toUpperCase()}
@@ -230,7 +251,7 @@ const usePlayerControls = () => {
 import { PointerLockControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 
-const DoomPlayer = () => {
+const DoomPlayer = ({ isPaused }) => {
   const { forward, backward, left, right } = usePlayerControls();
   const { camera } = useThree();
   const speed = 0.15;
@@ -244,6 +265,8 @@ const DoomPlayer = () => {
   }, [camera]);
 
   useFrame(() => {
+    if (isPaused) return; // Hentikan pergerakan WASD jika game sedang di-pause (modal terbuka)
+
     frontVector.set(0, 0, (backward ? 1 : 0) - (forward ? 1 : 0));
     sideVector.set((left ? 1 : 0) - (right ? 1 : 0), 0, 0);
     
@@ -256,11 +279,22 @@ const DoomPlayer = () => {
     camera.position.y = 1.5; 
   });
 
-  return <PointerLockControls />;
+  // Jika sedang di-pause (modal terbuka), cabut kontrol kamera agar mouse bisa bergerak bebas
+  return !isPaused ? <PointerLockControls /> : null;
 };
 
 const ProjectGallery = ({ isActive }) => {
   const [activeProject, setActiveProject] = useState(null);
+
+  // Paksa kursor muncul saat modal terbuka
+  useEffect(() => {
+    if (activeProject) {
+      if (document.pointerLockElement) {
+        document.exitPointerLock();
+      }
+      document.body.style.cursor = 'default';
+    }
+  }, [activeProject]);
 
   return (
     <div className="py-10 flex flex-col items-center w-full relative h-[80vh] min-h-[600px]">
@@ -271,9 +305,12 @@ const ProjectGallery = ({ isActive }) => {
           <h2 className="p4-title text-2xl md:text-4xl skew-x-12">INVESTIGATION EVIDENCE</h2>
         </div>
         <div className="mt-4 flex flex-col gap-2 pointer-events-auto items-start">
-          <p className="font-bold text-sm md:text-lg text-black bg-white px-4 border-2 border-black inline-block shadow-[4px_4px_0px_black] transform rotate-1">
-            Gunakan W A S D untuk berjalan. Klik layar untuk mengunci kamera. <br/> Tekan <b>ALT</b> (kiri spasi) atau <b>ESC</b> untuk memunculkan kursor.
-          </p>
+          <div className="bg-white border-2 border-black px-4 py-1 text-xs md:text-sm font-bold shadow-[4px_4px_0px_#000]">
+            Gunakan W A S D untuk berjalan. Klik layar untuk mengunci kamera.
+          </div>
+          <div className="bg-white border-2 border-black px-4 py-1 text-xs md:text-sm font-bold shadow-[4px_4px_0px_#000]">
+            Tekan ALT (kiri spasi) atau ESC untuk memunculkan kursor.
+          </div>
         </div>
       </div>
 
@@ -288,7 +325,7 @@ const ProjectGallery = ({ isActive }) => {
           <Suspense fallback={null}>
             <Scene setActiveProject={setActiveProject} />
           </Suspense>
-          {isActive && <DoomPlayer />}
+          {isActive && <DoomPlayer isPaused={!!activeProject} />}
         </Canvas>
       </div>
 
@@ -296,13 +333,18 @@ const ProjectGallery = ({ isActive }) => {
       <AnimatePresence>
         {activeProject && (
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "spring", damping: 20 }}
-            className="absolute top-1/2 left-1/2 w-[90%] max-w-2xl bg-white border-4 border-black z-50 shadow-[10px_10px_0px_black] p-1 pointer-events-auto"
-            style={{ x: "-50%", y: "-50%" }} // Framer motion manual centering
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/70 z-40 flex items-center justify-center p-4"
           >
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              transition={{ type: "spring", damping: 20 }}
+              className="w-full max-w-2xl bg-white border-4 border-black shadow-[10px_10px_0px_#ffe400] p-1 pointer-events-auto"
+            >
             <div className="border-4 border-double border-black p-6 flex flex-col md:flex-row gap-6 h-full relative">
               <button 
                 onClick={() => setActiveProject(null)}
@@ -329,7 +371,8 @@ const ProjectGallery = ({ isActive }) => {
                   </a>
                 </div>
               </div>
-            </div>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
