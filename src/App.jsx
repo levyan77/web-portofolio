@@ -27,7 +27,7 @@ function App() {
           <ProjectGallery />
         </div>
         
-        {activeTab === 'stats' && <About />}
+        {activeTab === 'about' && <About />}
       </main>
 
       {/* Decorative background elements */}
