@@ -64,7 +64,7 @@ const projectsData = [
     id: 6,
     title: "Aplikasi Keuangan",
     description: "Aplikasi pencatatan keuangan (Cashflow) berbasis web statis (HTML/JS) yang terintegrasi dengan Firebase Firestore untuk database realtime.",
-    link: "e:\\CODING\\Aplikasi Keuangan",
+    link: "#",
     demo: "https://aplikasikeuangan-demo.web.app",
     color: "#ca8a04", // Yellow
   }
