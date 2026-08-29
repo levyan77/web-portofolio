@@ -112,20 +112,21 @@ const ProjectCard3D = ({ project, index, total, onClick }) => {
 
           {/* Jika ada link demo, tampilkan Iframe Live Website! */}
           {project.demo ? (
-            <Html
-              transform
-              position={[0, 0.3, 0.11]} 
-              scale={0.005} 
-              className="pointer-events-none" // Jangan sampai iframe mencuri event klik mouse
-            >
-              <div className="w-[440px] h-[520px] bg-white rounded-lg overflow-hidden border-4 border-[#ffe400] shadow-lg">
-                <iframe 
-                  src={project.demo} 
-                  className="w-full h-full border-none pointer-events-none origin-top-left" 
-                  title={project.title}
-                />
-              </div>
-            </Html>
+            <group position={[0, 0.2, 0.12]} scale={0.004}>
+              <Html
+                transform
+                occlude
+                className="pointer-events-none" 
+              >
+                <div className="w-[500px] h-[600px] bg-white rounded-lg overflow-hidden border-8 border-[var(--color-persona-yellow)] shadow-lg" style={{ pointerEvents: 'none' }}>
+                  <iframe 
+                    src={project.demo} 
+                    className="w-full h-full border-none pointer-events-none" 
+                    title={project.title}
+                  />
+                </div>
+              </Html>
+            </group>
           ) : null}
 
           {/* Title Text */}
@@ -171,8 +172,8 @@ const Scene = ({ setActiveProject }) => {
         />
       ))}
 
-      {/* Environment / Background */}
-      <Environment preset="city" />
+      {/* Lighting sebagai pengganti Environment agar tidak bergantung pada koneksi luar */}
+      <ambientLight intensity={0.8} />
 
       {/* Floor with shadows */}
       <ContactShadows position={[0, -0.6, 0]} opacity={0.5} scale={20} blur={2} far={4} />
