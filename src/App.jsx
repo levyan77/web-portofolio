@@ -20,9 +20,18 @@ function App() {
       <MusicPlayer />
 
       <main className="pt-10 md:pt-20 px-4 md:pl-12 w-full md:pr-[300px] lg:pr-[450px] relative z-10 pb-32 md:pb-20">
-        {activeTab === 'home' && <Hero />}
-        {activeTab === 'projects' && <ProjectGallery />}
-        {activeTab === 'about' && <About />}
+        <div className={activeTab === 'home' ? 'block' : 'hidden'}>
+          <Hero />
+        </div>
+        
+        {/* Canvas 3D dibiarkan hidup di background (hanya disembunyikan) agar tidak perlu loading ulang yang bikin patah-patah */}
+        <div className={activeTab === 'projects' ? 'block' : 'hidden'}>
+          <ProjectGallery />
+        </div>
+        
+        <div className={activeTab === 'about' ? 'block' : 'hidden'}>
+          <About />
+        </div>
       </main>
 
       {/* Decorative background elements */}
