@@ -66,6 +66,7 @@ const projectsData = [
     description: "Aplikasi PWA pencatatan keuangan pribadi dengan UI Glassmorphism. Dilengkapi fitur Voice/NLP untuk pencatatan cerdas, sistem keamanan ganda (Google Auth & PIN), serta manajemen multi-rekening (Tabungan & Investasi). Dibangun dengan Vanilla JS dan Firebase Firestore.",
     link: "#",
     demo: "https://akunting-fd7b4.web.app/",
+    image: "./budgetku-preview.png",
     color: "#ca8a04", // Yellow
   }
 ];

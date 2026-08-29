@@ -51,7 +51,7 @@ const MusicPlayer = () => {
   const MarqueeText = () => (
     <div className="flex gap-16 px-8 whitespace-nowrap font-black text-black text-xl tracking-[0.2em] uppercase">
       <span>{isPlaying ? '▶ NOW PLAYING' : '⏸ PAUSED'}</span>
-      <span>PERSONA 4 REVIVAL PORTFOLIO</span>
+      <span>ACHMAD PAHLEVY PORTFOLIO</span>
       <span>🎵 BGM.MP3 🎵</span>
       <span>KLIK UNTUK {isPlaying ? 'PAUSE' : 'PLAY'}</span>
     </div>
