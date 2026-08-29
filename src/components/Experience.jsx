@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
+// ... (keep data arrays)
 const workData = [
   {
     company: 'PT PAL Indonesia',
@@ -97,14 +98,53 @@ const TimelineItem = ({ item, isLeft }) => {
 };
 
 const Experience = () => {
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeout = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      scrollTimeout.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 500); // 500ms after scrolling stops
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    };
+  }, []);
+
+  const scrollTo = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto py-10 px-4 md:px-8 relative z-10 min-h-screen">
       
+      {/* Auto-Hiding Side Navigation */}
+      <div className={`fixed right-2 md:right-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-3 transition-all duration-300 ${isScrolling ? 'translate-x-20 opacity-0 pointer-events-none' : 'translate-x-0 opacity-100 pointer-events-auto'}`}>
+        <button onClick={() => scrollTo('career')} className="bg-black text-white font-bold py-2 px-3 hover:bg-[var(--color-persona-orange)] transition-colors border-2 border-white uppercase text-xs transform -skew-x-12 shadow-[4px_4px_0px_#111]">
+          <div className="skew-x-12">Career</div>
+        </button>
+        <button onClick={() => scrollTo('education')} className="bg-black text-white font-bold py-2 px-3 hover:bg-[var(--color-persona-orange)] transition-colors border-2 border-white uppercase text-xs transform -skew-x-12 shadow-[4px_4px_0px_#111]">
+          <div className="skew-x-12">Edu</div>
+        </button>
+        <button onClick={() => scrollTo('organizations')} className="bg-black text-white font-bold py-2 px-3 hover:bg-[var(--color-persona-orange)] transition-colors border-2 border-white uppercase text-xs transform -skew-x-12 shadow-[4px_4px_0px_#111]">
+          <div className="skew-x-12">Orgs</div>
+        </button>
+      </div>
+
       {/* Central Line for Desktop */}
-      <div className="hidden md:block absolute left-1/2 top-24 bottom-10 w-2 bg-black transform -translate-x-1/2"></div>
+      <div className="hidden md:block absolute left-1/2 top-40 bottom-10 w-2 bg-black transform -translate-x-1/2 z-0"></div>
       
       {/* Work Experience */}
-      <div className="text-center md:text-left">
+      <div id="career" className="text-center md:text-left scroll-mt-24">
         <SectionTitle title="Career History" />
       </div>
       <div className="flex flex-col relative w-full">
@@ -114,7 +154,7 @@ const Experience = () => {
       </div>
 
       {/* Education */}
-      <div className="text-center md:text-right mt-10">
+      <div id="education" className="text-center md:text-right mt-10 scroll-mt-24">
         <SectionTitle title="Education" />
       </div>
       <div className="flex flex-col relative w-full">
@@ -124,7 +164,7 @@ const Experience = () => {
       </div>
 
       {/* Organizations */}
-      <div className="text-center md:text-left mt-10">
+      <div id="organizations" className="text-center md:text-left mt-10 scroll-mt-24">
         <SectionTitle title="Organizations" />
       </div>
       <div className="flex flex-col relative w-full">

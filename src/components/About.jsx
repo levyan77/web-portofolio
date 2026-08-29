@@ -23,7 +23,7 @@ const About = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-orange-500 rounded-full blur-3xl opacity-50 -z-10"></div>
         
         <div className="bg-black text-white p-6 md:p-10 border-4 border-white shadow-[15px_15px_0px_var(--color-persona-blue)] transform rotate-1 w-full max-w-md">
-          <h2 className="font-serif-p4 text-5xl mb-6 text-center text-[var(--color-persona-yellow)]">Social Stats</h2>
+          <h2 className="font-serif-p4 text-5xl mb-6 text-center text-[var(--color-persona-yellow)]">Core Skills</h2>
           
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">

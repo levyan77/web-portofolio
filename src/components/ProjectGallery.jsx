@@ -22,7 +22,11 @@ const projectsData = [
   {
     id: 1,
     title: "Mini Project Alta",
-    description: "Proyek front-end yang dibuat menggunakan Nuxt.js (Vue.js framework) untuk Alterra Academy. Menggunakan Hasura GraphQL dan NewsAPI untuk mengambil data berita gaming dan statistik karakter.",
+    description: (
+      <>
+        Proyek front-end yang dibuat menggunakan <span className="text-black bg-[var(--color-persona-yellow)] px-1">Nuxt.js</span> (Vue.js framework) untuk <span className="text-[var(--color-persona-orange)] uppercase font-black">Alterra Academy</span>. Menggunakan <span className="text-white bg-blue-600 px-1 rounded-sm">Hasura GraphQL</span> dan NewsAPI untuk mengambil data berita gaming dan statistik karakter.
+      </>
+    ),
     link: "https://github.com/levyan77/miniProjectAlta",
     demo: "https://miniprojectalta.vercel.app",
     image: "./alta-preview.png",
@@ -31,7 +35,11 @@ const projectsData = [
   {
     id: 2,
     title: "Hospital Management",
-    description: "Front-End Web untuk Sistem Manajemen Rumah Sakit (Group 34). Dibangun untuk menangani pendaftaran pasien, jadwal dokter, dan rekam medis.",
+    description: (
+      <>
+        Front-End Web untuk <span className="text-black bg-[var(--color-persona-yellow)] px-1">Sistem Manajemen Rumah Sakit</span> (Group 34). Dibangun untuk menangani pendaftaran pasien, jadwal dokter, dan <span className="text-[var(--color-persona-blue)] font-black">rekam medis</span>.
+      </>
+    ),
     link: "https://github.com/Hospital-Management-System-Group-34/FE-Web",
     demo: "https://hospital-management-demo.vercel.app",
     color: "#2563eb", // Blue
@@ -39,7 +47,11 @@ const projectsData = [
   {
     id: 3,
     title: "TemanPintar-SPI",
-    description: "Sistem Informasi Enterprise untuk digitalisasi manajemen audit internal di PT PAL Indonesia. Dibangun dengan Laravel, Livewire, & Alpine.js. Dilengkapi fitur Papan Kanban interaktif, integrasi Telegram Webhook, dan Asisten AI Gemini.",
+    description: (
+      <>
+        Sistem Informasi Enterprise untuk digitalisasi manajemen audit internal di <span className="text-white bg-[#00529C] px-1 rounded-sm">PT PAL Indonesia</span>. Dibangun dengan <span className="text-black bg-[var(--color-persona-yellow)] px-1">Laravel, Livewire, & Alpine.js</span>. Dilengkapi fitur Papan Kanban interaktif, integrasi <span className="text-[var(--color-persona-blue)] font-black">Telegram Webhook</span>, dan Asisten <span className="text-[var(--color-persona-orange)] uppercase font-black">AI Gemini</span>.
+      </>
+    ),
     link: "https://github.com/levyan77/temanpintar-spi",
     demo: "https://temanpintar-demo.vercel.app",
     color: "#16a34a", // Green
@@ -47,7 +59,11 @@ const projectsData = [
   {
     id: 4,
     title: "Ninja Kita Levy",
-    description: "Proyek interaktif / game berbasis web atau aplikasi profil bertema Ninja. Menampilkan kemampuan styling dan interaksi DOM dasar.",
+    description: (
+      <>
+        Proyek interaktif / game berbasis web atau aplikasi profil bertema <span className="text-[var(--color-persona-orange)] uppercase font-black">Ninja</span>. Menampilkan kemampuan styling dan interaksi DOM dasar.
+      </>
+    ),
     link: "https://github.com/levyan77/NinjaKitaLevy",
     demo: "https://ninjakita-demo.vercel.app",
     color: "#9333ea", // Purple
@@ -55,7 +71,11 @@ const projectsData = [
   {
     id: 5,
     title: "Word Generator",
-    description: "Aplikasi web sederhana untuk men-generate kata sandi, lorem ipsum, atau kata acak. Sangat berguna untuk kebutuhan testing atau utilitas harian.",
+    description: (
+      <>
+        Aplikasi web sederhana untuk men-generate <span className="text-[var(--color-persona-blue)] font-black">kata sandi</span>, lorem ipsum, atau kata acak. Sangat berguna untuk kebutuhan <span className="text-black bg-[var(--color-persona-yellow)] px-1">testing</span> atau utilitas harian.
+      </>
+    ),
     link: "https://github.com/levyan77/wordGenerator",
     demo: "https://wordgenerator-demo.vercel.app",
     color: "#ea580c", // Orange
@@ -63,7 +83,11 @@ const projectsData = [
   {
     id: 6,
     title: "BudgetKu",
-    description: "Aplikasi PWA pencatatan keuangan pribadi dengan UI Glassmorphism. Dilengkapi fitur Voice/NLP untuk pencatatan cerdas, sistem keamanan ganda (Google Auth & PIN), serta manajemen multi-rekening (Tabungan & Investasi). Dibangun dengan Vanilla JS dan Firebase Firestore.",
+    description: (
+      <>
+        Aplikasi <span className="text-black bg-[var(--color-persona-yellow)] px-1">PWA</span> pencatatan keuangan pribadi dengan UI <span className="text-[var(--color-persona-blue)] font-black">Glassmorphism</span>. Dilengkapi fitur <span className="text-[var(--color-persona-orange)] uppercase font-black">Voice/NLP</span> untuk pencatatan cerdas, sistem keamanan ganda (Google Auth & PIN), serta manajemen multi-rekening. Dibangun dengan <span className="text-black bg-white px-1 border-2 border-black font-black">Vanilla JS</span> dan Firebase Firestore.
+      </>
+    ),
     link: "#",
     demo: "https://akunting-fd7b4.web.app/",
     image: "./budgetku-preview.png",
@@ -72,7 +96,7 @@ const projectsData = [
 ];
 
 // Reusable 3D Card Component
-const ProjectCard3D = ({ project, index, total, onClick }) => {
+const ProjectCard3D = ({ project, index, total, onClick, isMobile }) => {
   const meshRef = useRef();
   // Arrange items in a circle
   const radius = 5;
@@ -91,8 +115,8 @@ const ProjectCard3D = ({ project, index, total, onClick }) => {
           ref={meshRef}
           onClick={(e) => { 
             e.stopPropagation(); 
-            // Mencegah klik ganda: Hanya buka detail jika kursor sedang tersembunyi/terkunci di dalam kanvas
-            if (document.pointerLockElement) {
+            // Mencegah klik ganda: Buka detail jika kursor sedang terkunci (FPS) ATAU jika pengguna menggunakan layar sentuh (Mobile)
+            if (document.pointerLockElement || isMobile) {
               onClick(project); 
             }
           }}
@@ -176,7 +200,7 @@ const ProjectCard3D = ({ project, index, total, onClick }) => {
 };
 
 // 3D Scene Assembly
-const Scene = ({ setActiveProject }) => {
+const Scene = ({ setActiveProject, isMobile }) => {
   return (
     <>
       <ambientLight intensity={0.5} />
@@ -191,6 +215,7 @@ const Scene = ({ setActiveProject }) => {
           index={i} 
           total={projectsData.length} 
           onClick={setActiveProject}
+          isMobile={isMobile}
         />
       ))}
 
@@ -206,6 +231,7 @@ const Scene = ({ setActiveProject }) => {
     </>
   );
 };
+
 
 // WASD Controls Hook
 const usePlayerControls = () => {
@@ -312,7 +338,7 @@ const ProjectGallery = ({ isActive }) => {
       {/* Header Overlay */}
       <div className="absolute top-0 left-4 md:left-10 z-10 pointer-events-none">
         <div className="inline-block bg-black text-white px-8 py-3 transform -skew-x-12 border-4 border-white shadow-[8px_8px_0px_#ff7b00] mt-10">
-          <h2 className="p4-title text-2xl md:text-4xl skew-x-12">INVESTIGATION EVIDENCE</h2>
+          <h2 className="p4-title text-2xl md:text-4xl skew-x-12">PROJECT SHOWCASE</h2>
         </div>
         <div className="mt-4 flex flex-col gap-2 pointer-events-auto items-start">
           <div className="bg-white border-2 border-black px-4 py-1 text-xs md:text-sm font-bold shadow-[4px_4px_0px_#000]">
@@ -335,7 +361,7 @@ const ProjectGallery = ({ isActive }) => {
       <div className="w-full h-full border-8 border-black shadow-[15px_15px_0px_#0088cc] rounded-xl overflow-hidden cursor-move relative z-0">
         <Canvas shadows={{ type: THREE.PCFShadowMap }} camera={{ position: [0, 2, 10], fov: 60 }}>
           <Suspense fallback={null}>
-            <Scene setActiveProject={setActiveProject} />
+            <Scene setActiveProject={setActiveProject} isMobile={isMobile} />
           </Suspense>
           {isActive && !isMobile && <DoomPlayer isPaused={!!activeProject} />}
           {isActive && isMobile && <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 2 + 0.1} minPolarAngle={Math.PI / 3} target={[0, 1.5, 0]} />}
@@ -366,25 +392,24 @@ const ProjectGallery = ({ isActive }) => {
                 X
               </button>
               
-              <div className="flex-1 flex flex-col">
-                <h3 className="font-serif-p4 text-3xl uppercase mb-3">
-                  <span className="bg-black text-[#ffe400] px-2 mr-2">PROJECT:</span> 
-                  {activeProject.title}
-                </h3>
-                <p className="font-bold text-gray-800 text-base md:text-lg leading-relaxed mb-8 flex-grow">
-                  {activeProject.description}
-                </p>
-                
-                <div className="flex gap-4 mt-auto">
-                  <a href={activeProject.link} target="_blank" rel="noreferrer" className="bg-black text-white font-bold py-2 px-6 hover:bg-[#ff7b00] transition-colors border-2 border-black uppercase text-sm transform -skew-x-12">
-                    <div className="skew-x-12">View Source</div>
-                  </a>
-                  <a href={activeProject.demo} target="_blank" rel="noreferrer" className="bg-black text-[#ffe400] font-bold py-2 px-6 hover:bg-[#ff7b00] hover:text-white transition-colors border-2 border-black uppercase text-sm transform -skew-x-12">
-                    <div className="skew-x-12">Live Demo</div>
-                  </a>
-                </div>
-              </div>
-              </div>
+                <div className="flex-1 flex flex-col">
+                  <h3 className="font-serif-p4 text-2xl md:text-3xl uppercase mb-3 leading-tight">
+                    <span className="bg-black text-[#ffe400] px-2 mr-2 inline-block mb-1 md:mb-0">PROJECT:</span> 
+                    {activeProject.title}
+                  </h3>
+                  <p className="font-bold text-lg md:text-xl leading-relaxed mb-8 text-gray-800 flex-grow">
+                    {activeProject.description}
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                    <a href={activeProject.link} target="_blank" rel="noreferrer" className="bg-black text-white font-bold py-3 sm:py-2 px-2 md:px-6 hover:bg-[#ff7b00] transition-colors border-2 border-black uppercase text-sm transform -skew-x-12 w-full text-center">
+                      <div className="skew-x-12">View Source</div>
+                    </a>
+                    <a href={activeProject.demo} target="_blank" rel="noreferrer" className="bg-black text-[#ffe400] font-bold py-3 sm:py-2 px-2 md:px-6 hover:bg-[#ff7b00] hover:text-white transition-colors border-2 border-black uppercase text-sm transform -skew-x-12 w-full text-center">
+                      <div className="skew-x-12">Live Demo</div>
+                    </a>
+                  </div>
+                </div></div>
             </motion.div>
           </motion.div>
         )}
