@@ -24,7 +24,7 @@ const projectsData = [
     title: "Mini Project Alta",
     description: "Proyek front-end yang dibuat menggunakan Nuxt.js (Vue.js framework) untuk Alterra Academy. Menggunakan Hasura GraphQL dan NewsAPI untuk mengambil data berita gaming dan statistik karakter.",
     link: "https://github.com/levyan77/miniProjectAlta",
-    demo: "https://miniprojectalta-demo.vercel.app",
+    demo: "https://miniprojectalta.vercel.app",
     color: "#dc2626", // Red
   },
   {
