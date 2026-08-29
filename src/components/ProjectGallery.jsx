@@ -104,9 +104,34 @@ const ProjectCard3D = ({ project, index, total, onClick }) => {
           {/* Persona style bright materials */}
           <meshStandardMaterial color={project.color} roughness={0.2} metalness={0.5} />
           
+          {/* Tampilan layarnya */}
+          <mesh position={[0, 0, 0.1]}>
+            <planeGeometry args={[2.3, 3.3]} />
+            <meshBasicMaterial color="#111" />
+          </mesh>
+
+          {/* Jika ada link demo, tampilkan Iframe Live Website! */}
+          {project.demo ? (
+            <Html
+              transform
+              position={[0, 0.3, 0.11]} 
+              scale={0.005} 
+              className="pointer-events-none" // Jangan sampai iframe mencuri event klik mouse
+            >
+              <div className="w-[440px] h-[520px] bg-white rounded-lg overflow-hidden border-4 border-[#ffe400] shadow-lg">
+                <iframe 
+                  src={project.demo} 
+                  className="w-full h-full border-none pointer-events-none origin-top-left" 
+                  title={project.title}
+                />
+              </div>
+            </Html>
+          ) : null}
+
+          {/* Title Text */}
           <Text
-            position={[0, 0, 0.11]}
-            fontSize={0.35}
+            position={[0, project.demo ? -1.35 : 0, 0.12]}
+            fontSize={project.demo ? 0.22 : 0.35}
             color="white"
             anchorX="center"
             anchorY="middle"
@@ -115,12 +140,6 @@ const ProjectCard3D = ({ project, index, total, onClick }) => {
           >
             {project.title.toUpperCase()}
           </Text>
-
-          {/* White border/trim */}
-          <mesh position={[0, 0, 0.1]}>
-            <planeGeometry args={[2.3, 3.3]} />
-            <meshBasicMaterial color="#111" />
-          </mesh>
         </mesh>
       </Float>
 
