@@ -58,23 +58,40 @@ const MusicPlayer = () => {
   );
 
   return (
-    <div 
-      className="fixed top-0 left-0 w-full z-50 overflow-hidden cursor-pointer group" 
-      onClick={togglePlay}
-    >
-      {/* The Angled Background Container */}
-      <div className="bg-[var(--color-persona-yellow)] border-b-4 border-black shadow-[0_5px_0px_rgba(0,0,0,1)] transform -skew-x-12 scale-110 -ml-4 w-[110%] py-2 transition-colors duration-300 group-hover:bg-[var(--color-persona-orange)]">
-        
+    <div className="fixed top-0 left-0 w-full z-50 group">
+      {/* The Angled Background Container - Clickable for Play/Pause */}
+      <div 
+        className="bg-[var(--color-persona-yellow)] border-b-4 border-black shadow-[0_5px_0px_rgba(0,0,0,1)] transform -skew-x-12 scale-110 -ml-4 w-[110%] py-2 transition-colors duration-300 group-hover:bg-[var(--color-persona-orange)] cursor-pointer overflow-hidden relative"
+        onClick={togglePlay}
+      >
         {/* Scrolling Content */}
         <motion.div 
           animate={{ x: ["0%", "-50%"] }}
           transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
           className="flex w-max"
         >
-          {/* We render it twice so it loops seamlessly */}
           <MarqueeText />
           <MarqueeText />
         </motion.div>
+      </div>
+
+      {/* Volume Control */}
+      <div 
+        className="absolute top-1 right-8 z-50 flex items-center gap-2 bg-black px-3 py-1 border-2 border-white shadow-[3px_3px_0px_var(--color-persona-yellow)] transform rotate-2 hover:rotate-0 transition-transform"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <span className="text-white text-xs font-black uppercase tracking-wider">Vol</span>
+        <input 
+          type="range" 
+          min="0" 
+          max="1" 
+          step="0.01" 
+          defaultValue="1"
+          onChange={(e) => {
+            if(audioRef.current) audioRef.current.volume = e.target.value;
+          }}
+          className="w-16 md:w-24 accent-[var(--color-persona-yellow)] cursor-pointer"
+        />
       </div>
 
       <audio 
