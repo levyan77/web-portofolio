@@ -45,7 +45,7 @@ const MusicPlayer = () => {
               autoPlay={hasInteracted} 
               loop 
               className="w-full h-8"
-              src="/bgm.mp3"
+              src="./bgm.mp3"
             >
               Browser Anda tidak mendukung elemen audio.
             </audio>
@@ -71,7 +71,7 @@ const MusicPlayer = () => {
         <audio 
           autoPlay 
           loop 
-          src="/bgm.mp3"
+          src="./bgm.mp3"
           style={{ display: 'none' }}
         />
       )}
