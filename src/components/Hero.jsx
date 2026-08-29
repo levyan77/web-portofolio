@@ -23,7 +23,7 @@ const Hero = () => {
         className="bg-black text-white p-6 md:p-10 border-8 border-white shadow-[15px_15px_0px_var(--color-persona-orange)] transform -rotate-2 relative z-10"
       >
         <h1 className="p4-title text-5xl md:text-8xl font-black mb-2 tracking-tighter leading-none">
-          ACHMAD'S <br/>
+          ACHMAD PAHLEVY'S <br/>
           <span className="text-[var(--color-persona-yellow)]">PORTFOLIO</span>
         </h1>
         <p className="font-bold text-xl md:text-2xl uppercase tracking-widest mt-4">
@@ -35,12 +35,21 @@ const Hero = () => {
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="mt-12 ml-4 md:ml-12"
+        className="mt-12 ml-4 md:ml-12 flex flex-col gap-6"
       >
-        <div className="bg-white text-black p-4 inline-block font-black text-2xl transform skew-x-[-15deg] shadow-[5px_5px_0px_black] border-2 border-black">
+        <div className="bg-white text-black p-4 inline-block font-black text-xl md:text-2xl transform skew-x-[-15deg] shadow-[5px_5px_0px_black] border-2 border-black w-max">
           <div className="skew-x-[15deg]">
-            FULL-STACK DEV // PROBLEM SOLVER
+            IT PROJECT OFFICER // QUALITY ASSURANCE // AUDITOR
           </div>
+        </div>
+
+        <div className="flex gap-4">
+          <a href="https://www.linkedin.com/in/achmad-pahlevy/" target="_blank" rel="noreferrer" className="bg-black text-white p-2 md:px-6 font-bold uppercase transform -skew-x-12 border-2 border-white hover:bg-[#0a66c2] transition-colors shadow-[3px_3px_0px_var(--color-persona-blue)]">
+            <div className="skew-x-12">LinkedIn</div>
+          </a>
+          <a href="mailto:pahlevyan@gmail.com" className="bg-[var(--color-persona-yellow)] text-black p-2 md:px-6 font-bold uppercase transform -skew-x-12 border-2 border-black hover:bg-white transition-colors shadow-[3px_3px_0px_black]">
+            <div className="skew-x-12">Email Me</div>
+          </a>
         </div>
       </motion.div>
     </motion.div>

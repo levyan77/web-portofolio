@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
 
 const statsData = [
-  { subject: 'FRONT-END', A: 95, fullMark: 100 },
-  { subject: 'BACK-END', A: 90, fullMark: 100 },
-  { subject: 'DATABASE', A: 85, fullMark: 100 },
-  { subject: 'INTEGRASI API', A: 95, fullMark: 100 },
-  { subject: 'ARSITEKTUR', A: 90, fullMark: 100 },
+  { subject: 'SOFTWARE QA', A: 95, fullMark: 100 },
+  { subject: 'PROD TESTING', A: 90, fullMark: 100 },
+  { subject: 'FRONT-END (VUE)', A: 85, fullMark: 100 },
+  { subject: 'BACK-END (PHP)', A: 80, fullMark: 100 },
+  { subject: 'DB & AS/400', A: 85, fullMark: 100 },
 ];
 
 const About = () => {
@@ -29,7 +29,7 @@ const About = () => {
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="70%" data={statsData}>
                 <PolarGrid stroke="#666" />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: 'white', fontSize: 12, fontWeight: 'bold' }} />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: 'white', fontSize: 11, fontWeight: 'bold' }} />
                 <Radar name="You" dataKey="A" stroke="var(--color-persona-yellow)" fill="var(--color-persona-orange)" fillOpacity={0.8} />
               </RadarChart>
             </ResponsiveContainer>
@@ -40,14 +40,14 @@ const About = () => {
       <div className="w-full md:w-1/2 p-8 bg-white border-4 border-black transform -rotate-1 shadow-[15px_15px_0px_black] relative z-10">
         <h2 className="font-black text-4xl mb-4 uppercase text-black">Profile Overview</h2>
         <div className="w-20 h-3 bg-black mb-6 transform -skew-x-12"></div>
-        <p className="font-bold text-xl leading-relaxed mb-4 text-gray-800">
-          Halo! Saya adalah seorang <span className="text-[var(--color-persona-orange)] uppercase font-black">Full-Stack Web Developer</span> yang berpengalaman merancang sistem dari skala *mini-project* hingga level *enterprise*.
+        <p className="font-bold text-lg md:text-xl leading-relaxed mb-4 text-gray-800">
+          Halo! Saya adalah <span className="text-[var(--color-persona-orange)] uppercase font-black">Achmad Pahlevy</span>, seorang profesional IT lulusan S1 Teknik Komputer ITS Surabaya.
         </p>
-        <p className="font-bold text-xl leading-relaxed mb-4 text-gray-800">
-          Senjata utama saya mencakup ekosistem <span className="text-black bg-[var(--color-persona-yellow)] px-1">PHP (Laravel, Livewire)</span>, framework modern <span className="text-black bg-[var(--color-persona-yellow)] px-1">JavaScript (Nuxt.js, Alpine.js)</span>, serta infrastruktur cloud & API (Firebase, Hasura GraphQL, AI Gemini).
+        <p className="font-bold text-lg md:text-xl leading-relaxed mb-4 text-gray-800">
+          Karir saya membentang dari pengembangan Front-end menggunakan <span className="text-black bg-[var(--color-persona-yellow)] px-1">Vue.js</span>, hingga memastikan kualitas software tingkat enterprise. Di <span className="text-white bg-[#00529C] px-1 rounded-sm">PT Bank Rakyat Indonesia</span>, saya berfokus sebagai <i>Product Tester untuk Core Banking</i> dan manajemen kegiatan SIT/UAT.
         </p>
-        <p className="font-bold text-xl leading-relaxed text-gray-800">
-          Mulai dari mendigitalisasi siklus audit di BUMN, meracik front-end rumah sakit, hingga membuat bot interaktif — saya selalu siap mengeksekusi misi selanjutnya!
+        <p className="font-bold text-lg md:text-xl leading-relaxed text-gray-800">
+          Saat ini saya juga mengemban amanah sebagai <span className="text-white bg-[#FF0000] px-1 rounded-sm">Auditor & IT Support di PT PAL Indonesia</span>. Saya menguasai berbagai bahasa pemrograman (Python, C++, Kotlin) serta infrastruktur <i>legacy</i> seperti AS/400.
         </p>
       </div>
     </motion.div>

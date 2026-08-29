@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProjectGallery from './components/ProjectGallery';
 import About from './components/About';
+import Experience from './components/Experience';
 import MusicPlayer from './components/MusicPlayer';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         </div>
         
         {activeTab === 'about' && <About />}
+        {activeTab === 'history' && <Experience />}
       </main>
 
       {/* Decorative background elements */}
