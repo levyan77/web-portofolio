@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const MusicPlayer = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+  const hasAutoPlayed = useRef(false);
 
-  // Auto-play workaround: Browsers block autoplay until user interacts with the page
+  // Auto-play workaround: Browsers block autoplay until user interacts
   useEffect(() => {
     const handleInteraction = () => {
-      if (!hasInteracted) {
-        setHasInteracted(true);
+      if (!hasAutoPlayed.current && audioRef.current) {
+        hasAutoPlayed.current = true;
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(() => {
+          // Autoplay was prevented
+        });
       }
+      
+      // Clean up listeners after first interaction
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('keydown', handleInteraction);
     };
     
-    // Listen for any click or key press on the website to trigger the music
     document.addEventListener('click', handleInteraction);
     document.addEventListener('keydown', handleInteraction);
     
@@ -21,60 +30,59 @@ const MusicPlayer = () => {
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('keydown', handleInteraction);
     };
-  }, [hasInteracted]);
+  }, []);
+
+  const togglePlay = (e) => {
+    e.stopPropagation(); // Mencegah event bocor ke document listener
+    
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+      // Jika user ngeklik manual, anggap sudah autoplay agar tidak nyala dua kali
+      hasAutoPlayed.current = true; 
+    }
+  };
+
+  // Repeated text for continuous marquee effect
+  const MarqueeText = () => (
+    <div className="flex gap-16 px-8 whitespace-nowrap font-black text-black text-xl tracking-[0.2em] uppercase">
+      <span>{isPlaying ? '▶ NOW PLAYING' : '⏸ PAUSED'}</span>
+      <span>PERSONA 4 REVIVAL PORTFOLIO</span>
+      <span>🎵 BGM.MP3 🎵</span>
+      <span>KLIK UNTUK {isPlaying ? 'PAUSE' : 'PLAY'}</span>
+    </div>
+  );
 
   return (
-    <div className="fixed bottom-4 left-4 z-50">
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="mb-4 bg-black p-4 border-2 border-white shadow-[5px_5px_0px_var(--color-persona-yellow)] text-white w-72"
-          >
-            <h3 className="font-bold text-[var(--color-persona-yellow)] mb-2 uppercase border-b border-gray-600 pb-1">
-              Cassette Player
-            </h3>
-            <p className="text-xs mb-3 text-gray-300 font-bold">
-              Untuk memutar lagu tanpa diblokir oleh pihak label musik (SME), masukkan file lagu berformat .mp3 Anda ke dalam folder <b>public/</b> lalu beri nama <b>bgm.mp3</b>.
-            </p>
-            
-            <audio 
-              controls 
-              autoPlay={hasInteracted} 
-              loop 
-              className="w-full h-8"
-              src="./bgm.mp3"
-            >
-              Browser Anda tidak mendukung elemen audio.
-            </audio>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div 
+      className="fixed top-0 left-0 w-full z-50 overflow-hidden cursor-pointer group" 
+      onClick={togglePlay}
+    >
+      {/* The Angled Background Container */}
+      <div className="bg-[var(--color-persona-yellow)] border-b-4 border-black shadow-[0_5px_0px_rgba(0,0,0,1)] transform -skew-x-12 scale-110 -ml-4 w-[110%] py-2 transition-colors duration-300 group-hover:bg-[var(--color-persona-orange)]">
+        
+        {/* Scrolling Content */}
+        <motion.div 
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+          className="flex w-max"
+        >
+          {/* We render it twice so it loops seamlessly */}
+          <MarqueeText />
+          <MarqueeText />
+        </motion.div>
+      </div>
 
-      <button 
-        onClick={() => {
-          setIsOpen(!isOpen);
-          setHasInteracted(true);
-        }}
-        className="bg-[var(--color-persona-yellow)] text-black font-black px-4 py-3 border-2 border-black shadow-[4px_4px_0px_black] hover:bg-[var(--color-persona-orange)] hover:text-white transition-colors flex items-center gap-2 transform skew-x-12"
-      >
-        <div className="-skew-x-12 flex items-center gap-2">
-          <span className="text-xl">🎵</span> 
-          <span>{isOpen ? 'CLOSE PLAYER' : 'PLAY BGM'}</span>
-        </div>
-      </button>
-
-      {/* Hidden audio element for background autoplay */}
-      {hasInteracted && !isOpen && (
-        <audio 
-          autoPlay 
-          loop 
-          src="./bgm.mp3"
-          style={{ display: 'none' }}
-        />
-      )}
+      <audio 
+        ref={audioRef}
+        loop 
+        src="./bgm.mp3"
+        style={{ display: 'none' }}
+      />
     </div>
   );
 };
