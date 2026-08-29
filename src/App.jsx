@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProjectGallery from './components/ProjectGallery';
 import About from './components/About';
+import MusicPlayer from './components/MusicPlayer';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -16,6 +17,7 @@ function App() {
       <div className="crt-overlay"></div>
 
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <MusicPlayer />
 
       <main className="pt-10 md:pt-20 px-4 md:pl-12 w-full md:pr-[300px] lg:pr-[450px] relative z-10 pb-32 md:pb-20">
         {activeTab === 'home' && <Hero />}
