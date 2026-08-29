@@ -24,7 +24,7 @@ function App() {
         
         {/* Canvas 3D dibiarkan hidup di background (hanya disembunyikan) agar tidak perlu loading ulang yang bikin patah-patah */}
         <div className={activeTab === 'projects' ? 'block' : 'hidden'}>
-          <ProjectGallery />
+          <ProjectGallery isActive={activeTab === 'projects'} />
         </div>
         
         {activeTab === 'about' && <About />}

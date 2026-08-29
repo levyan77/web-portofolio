@@ -239,7 +239,7 @@ const DoomPlayer = () => {
   return <PointerLockControls />;
 };
 
-const ProjectGallery = () => {
+const ProjectGallery = ({ isActive }) => {
   const [activeProject, setActiveProject] = useState(null);
 
   return (
@@ -268,7 +268,7 @@ const ProjectGallery = () => {
           <Suspense fallback={null}>
             <Scene setActiveProject={setActiveProject} />
           </Suspense>
-          <DoomPlayer />
+          {isActive && <DoomPlayer />}
         </Canvas>
       </div>
 
