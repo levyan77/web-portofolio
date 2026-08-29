@@ -98,7 +98,7 @@ const TimelineItem = ({ item, isLeft }) => {
 
 const Experience = () => {
   return (
-    <div className="w-full max-w-6xl mx-auto py-10 relative z-10 min-h-screen">
+    <div className="w-full max-w-6xl mx-auto py-10 px-4 md:px-8 relative z-10 min-h-screen">
       
       {/* Central Line for Desktop */}
       <div className="hidden md:block absolute left-1/2 top-24 bottom-10 w-2 bg-black transform -translate-x-1/2"></div>

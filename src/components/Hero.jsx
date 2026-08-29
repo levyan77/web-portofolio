@@ -37,7 +37,7 @@ const Hero = () => {
         transition={{ delay: 0.5 }}
         className="mt-12 ml-4 md:ml-12 flex flex-col gap-6"
       >
-        <div className="bg-white text-black p-4 inline-block font-black text-xl md:text-2xl transform skew-x-[-15deg] shadow-[5px_5px_0px_black] border-2 border-black w-max">
+        <div className="bg-white text-black p-4 inline-block font-black text-xl md:text-2xl transform skew-x-[-15deg] shadow-[5px_5px_0px_black] border-2 border-black max-w-[90vw] md:max-w-max">
           <div className="skew-x-[15deg]">
             IT PROJECT OFFICER // QUALITY ASSURANCE // AUDITOR
           </div>

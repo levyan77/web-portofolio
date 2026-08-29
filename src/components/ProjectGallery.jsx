@@ -287,6 +287,15 @@ const DoomPlayer = ({ isPaused }) => {
 const ProjectGallery = ({ isActive }) => {
   const [activeProject, setActiveProject] = useState(null);
 
+  // Deteksi Mobile / Layar Sentuh
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => {
+      return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+    };
+    setIsMobile(checkMobile());
+  }, []);
+
   // Paksa kursor muncul saat modal terbuka
   useEffect(() => {
     if (activeProject) {
@@ -307,11 +316,13 @@ const ProjectGallery = ({ isActive }) => {
         </div>
         <div className="mt-4 flex flex-col gap-2 pointer-events-auto items-start">
           <div className="bg-white border-2 border-black px-4 py-1 text-xs md:text-sm font-bold shadow-[4px_4px_0px_#000]">
-            Gunakan W A S D untuk berjalan. Klik layar untuk mengunci kamera.
+            {isMobile ? "Usap layar (Swipe) untuk melihat sekeliling." : "Gunakan W A S D untuk berjalan. Klik layar untuk mengunci kamera."}
           </div>
-          <div className="bg-white border-2 border-black px-4 py-1 text-xs md:text-sm font-bold shadow-[4px_4px_0px_#000]">
-            Tekan ALT (kiri spasi) atau ESC untuk memunculkan kursor.
-          </div>
+          {!isMobile && (
+            <div className="bg-white border-2 border-black px-4 py-1 text-xs md:text-sm font-bold shadow-[4px_4px_0px_#000]">
+              Tekan ALT (kiri spasi) atau ESC untuk memunculkan kursor.
+            </div>
+          )}
         </div>
       </div>
 
@@ -326,7 +337,8 @@ const ProjectGallery = ({ isActive }) => {
           <Suspense fallback={null}>
             <Scene setActiveProject={setActiveProject} />
           </Suspense>
-          {isActive && <DoomPlayer isPaused={!!activeProject} />}
+          {isActive && !isMobile && <DoomPlayer isPaused={!!activeProject} />}
+          {isActive && isMobile && <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 2 + 0.1} minPolarAngle={Math.PI / 3} target={[0, 1.5, 0]} />}
         </Canvas>
       </div>
 
