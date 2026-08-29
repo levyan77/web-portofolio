@@ -62,10 +62,10 @@ const projectsData = [
   },
   {
     id: 6,
-    title: "Aplikasi Keuangan",
-    description: "Aplikasi pencatatan keuangan (Cashflow) berbasis web statis (HTML/JS) yang terintegrasi dengan Firebase Firestore untuk database realtime.",
+    title: "BudgetKu",
+    description: "Aplikasi PWA pencatatan keuangan pribadi dengan UI Glassmorphism. Dilengkapi fitur Voice/NLP untuk pencatatan cerdas, sistem keamanan ganda (Google Auth & PIN), serta manajemen multi-rekening (Tabungan & Investasi). Dibangun dengan Vanilla JS dan Firebase Firestore.",
     link: "#",
-    demo: "https://aplikasikeuangan-demo.web.app",
+    demo: "https://akunting-fd7b4.web.app/",
     color: "#ca8a04", // Yellow
   }
 ];
