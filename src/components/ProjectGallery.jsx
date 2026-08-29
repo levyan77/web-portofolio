@@ -87,7 +87,13 @@ const ProjectCard3D = ({ project, index, total, onClick }) => {
       <Float speed={2.5} rotationIntensity={0.2} floatIntensity={1.5} floatingRange={[-0.2, 0.2]}>
         <mesh 
           ref={meshRef}
-          onClick={(e) => { e.stopPropagation(); onClick(project); }}
+          onClick={(e) => { 
+            e.stopPropagation(); 
+            // Mencegah klik ganda: Hanya buka detail jika kursor sedang tersembunyi/terkunci di dalam kanvas
+            if (document.pointerLockElement) {
+              onClick(project); 
+            }
+          }}
           onPointerOver={() => document.body.style.cursor = 'pointer'}
           onPointerOut={() => document.body.style.cursor = 'auto'}
           castShadow
