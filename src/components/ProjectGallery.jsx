@@ -66,6 +66,7 @@ const projectsData = [
     ),
     link: "https://github.com/levyan77/NinjaKitaLevy",
     demo: "https://ninjakita-levy.vercel.app",
+    image: "./ninjakita-preview.jpg",
     color: "#9333ea", // Purple
   },
   {
@@ -77,7 +78,7 @@ const projectsData = [
       </>
     ),
     link: "https://github.com/levyan77/wordGenerator",
-    demo: "https://word-generator-levy.vercel.app",
+    image: "./wordgen-preview.png",
     color: "#ea580c", // Orange
   },
   {
@@ -402,12 +403,16 @@ const ProjectGallery = ({ isActive }) => {
                   </p>
                   
                   <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-                    <a href={activeProject.link} target="_blank" rel="noreferrer" className="bg-black text-white font-bold py-3 sm:py-2 px-2 md:px-6 hover:bg-[#ff7b00] transition-colors border-2 border-black uppercase text-sm transform -skew-x-12 w-full text-center">
-                      <div className="skew-x-12">View Source</div>
-                    </a>
-                    <a href={activeProject.demo} target="_blank" rel="noreferrer" className="bg-black text-[#ffe400] font-bold py-3 sm:py-2 px-2 md:px-6 hover:bg-[#ff7b00] hover:text-white transition-colors border-2 border-black uppercase text-sm transform -skew-x-12 w-full text-center">
-                      <div className="skew-x-12">Live Demo</div>
-                    </a>
+                    {activeProject.link && (
+                      <a href={activeProject.link} target="_blank" rel="noreferrer" className="bg-black text-white font-bold py-3 sm:py-2 px-2 md:px-6 hover:bg-[#ff7b00] transition-colors border-2 border-black uppercase text-sm transform -skew-x-12 w-full text-center">
+                        <div className="skew-x-12">View Source</div>
+                      </a>
+                    )}
+                    {activeProject.demo && (
+                      <a href={activeProject.demo} target="_blank" rel="noreferrer" className="bg-black text-[#ffe400] font-bold py-3 sm:py-2 px-2 md:px-6 hover:bg-[#ff7b00] hover:text-white transition-colors border-2 border-black uppercase text-sm transform -skew-x-12 w-full text-center">
+                        <div className="skew-x-12">Live Demo</div>
+                      </a>
+                    )}
                   </div>
                 </div></div>
             </motion.div>
