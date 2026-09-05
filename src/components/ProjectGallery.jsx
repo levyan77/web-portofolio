@@ -42,6 +42,7 @@ const projectsData = [
     ),
     link: "https://github.com/Hospital-Management-System-Group-34/FE-Web",
     demo: "https://hospital-management-inky-iota.vercel.app",
+    image: "./hospital-preview.png",
     color: "#2563eb", // Blue
   },
   {

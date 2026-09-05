@@ -128,7 +128,7 @@ const Experience = () => {
     <div className="w-full max-w-6xl mx-auto py-10 px-4 md:px-8 relative z-10 min-h-screen">
       
       {/* Auto-Hiding Side Navigation */}
-      <div className={`fixed right-2 md:right-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-3 transition-all duration-300 ${isScrolling ? 'translate-x-20 opacity-0 pointer-events-none' : 'translate-x-0 opacity-100 pointer-events-auto'}`}>
+      <div className={`fixed right-2 md:right-auto md:left-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-3 transition-all duration-300 ${isScrolling ? 'translate-x-12 md:-translate-x-20 opacity-0 pointer-events-none' : 'translate-x-0 opacity-100 pointer-events-auto'}`}>
         <button onClick={() => scrollTo('career')} className="bg-black text-white font-bold py-2 px-3 hover:bg-[var(--color-persona-orange)] transition-colors border-2 border-white uppercase text-xs transform -skew-x-12 shadow-[4px_4px_0px_#111]">
           <div className="skew-x-12">Career</div>
         </button>
