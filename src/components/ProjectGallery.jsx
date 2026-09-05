@@ -65,7 +65,7 @@ const projectsData = [
       </>
     ),
     link: "https://github.com/levyan77/NinjaKitaLevy",
-    demo: "https://ninjakita-demo.vercel.app",
+    demo: "https://ninjakita-levy.vercel.app",
     color: "#9333ea", // Purple
   },
   {
@@ -77,7 +77,7 @@ const projectsData = [
       </>
     ),
     link: "https://github.com/levyan77/wordGenerator",
-    demo: "https://wordgenerator-demo.vercel.app",
+    demo: "https://word-generator-levy.vercel.app",
     color: "#ea580c", // Orange
   },
   {
