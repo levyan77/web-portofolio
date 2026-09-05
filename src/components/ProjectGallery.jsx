@@ -41,7 +41,7 @@ const projectsData = [
       </>
     ),
     link: "https://github.com/Hospital-Management-System-Group-34/FE-Web",
-    demo: "https://hospital-management-demo.vercel.app",
+    demo: "https://hospital-management-inky-iota.vercel.app",
     color: "#2563eb", // Blue
   },
   {
@@ -78,6 +78,7 @@ const projectsData = [
       </>
     ),
     link: "https://github.com/levyan77/wordGenerator",
+    demo: "https://word-generator-levy.vercel.app",
     image: "./wordgen-preview.png",
     color: "#ea580c", // Orange
   },
