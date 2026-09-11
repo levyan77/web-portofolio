@@ -54,7 +54,8 @@ const projectsData = [
       </>
     ),
     link: "https://github.com/levyan77/temanpintar-spi",
-    demo: "https://temanpintar-demo.vercel.app",
+    demo: "https://temanpinter-levy.freepage.cc/public/login",
+    image: "./temanpintar-preview.png",
     color: "#16a34a", // Green
   },
   {
@@ -72,10 +73,10 @@ const projectsData = [
   },
   {
     id: 5,
-    title: "Word Generator",
+    title: "DocCompiler Pro",
     description: (
       <>
-        Aplikasi web sederhana untuk men-generate <span className="text-[var(--color-persona-blue)] font-black">kata sandi</span>, lorem ipsum, atau kata acak. Sangat berguna untuk kebutuhan <span className="text-black bg-[var(--color-persona-yellow)] px-1">testing</span> atau utilitas harian.
+        Aplikasi <span className="text-black bg-[var(--color-persona-yellow)] px-1">Advanced Utility</span> untuk mengkompilasi <i>batch</i> gambar menjadi dokumen Microsoft Word (.docx) & PDF. Dilengkapi <span className="text-[var(--color-persona-blue)] font-black">Drag & Drop</span>, <i>Image Editor</i> (Crop/Rotate), kustomisasi dokumen, dan <span className="text-[var(--color-persona-orange)] uppercase font-black">IndexedDB Auto-Drafting</span>.
       </>
     ),
     link: "https://github.com/levyan77/wordGenerator",
