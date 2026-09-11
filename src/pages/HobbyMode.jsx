@@ -60,32 +60,39 @@ export default function HobbyMode() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
           {/* Steam Card */}
-          <motion.div whileHover={{ scale: 1.02 }} className="lg:col-span-2 bg-gradient-to-br from-[#1b2838] to-[#2a475e] border-2 border-[#66c0f4]/30 p-6 relative overflow-hidden group shadow-[0_0_15px_rgba(102,192,244,0.3)] flex flex-col md:flex-row gap-6 items-center md:items-start">
-            <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-[#171a21]/50 rounded-full group-hover:bg-[#66c0f4]/10 transition-all duration-500"></div>
+          <motion.div whileHover={{ scale: 1.02 }} 
+            className="lg:col-span-2 bg-gradient-to-br from-[#1b2838] to-[#2a475e] border-2 border-[#66c0f4]/50 p-6 md:p-8 relative overflow-hidden group shadow-[5px_5px_0_rgba(102,192,244,0.3)] flex flex-col md:flex-row gap-6 items-center md:items-start"
+            style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%)' }}
+          >
+            <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-[#171a21]/50 rounded-full group-hover:bg-[#66c0f4]/10 transition-all duration-500 scale-150 group-hover:scale-100"></div>
             
             {/* Avatar & Header */}
-            <div className="flex flex-col items-center gap-3 shrink-0">
-               <div className="w-32 h-32 border-4 border-[#66c0f4] p-1 bg-[#171a21] shadow-[0_0_15px_#66c0f4]">
-                  <img src="./steam-avatar.png" alt="Nizama Avatar" className="w-full h-full object-cover" />
+            <div className="flex flex-col items-center gap-3 shrink-0 relative z-10">
+               <div className="w-32 h-32 md:w-40 md:h-40 border-4 border-[#66c0f4] p-1 bg-[#171a21] shadow-[4px_4px_0_#66c0f4] transform -skew-x-6 group-hover:skew-x-0 transition-transform duration-300">
+                  <img src="./steam-avatar.png" alt="Nizama Avatar" className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 transition-transform duration-300" />
                </div>
-               <div className="text-center">
-                  <h2 className="text-2xl font-bold text-white flex items-center justify-center gap-2">Nizama <span className="text-xs bg-gray-600 px-1 rounded">▼</span></h2>
-                  <p className="text-sm text-gray-400">Lev 🇮🇩 Indonesia</p>
+               <div className="text-center mt-2">
+                  <h2 className="text-2xl md:text-3xl font-black italic text-white flex items-center justify-center gap-2 drop-shadow-[2px_2px_0_#66c0f4]">Nizama</h2>
+                  <p className="text-sm font-bold text-[#66c0f4] tracking-widest uppercase mt-1">Lev 🇮🇩 Indonesia</p>
                </div>
             </div>
 
             {/* Stats */}
-            <div className="flex-1 w-full flex flex-col gap-4 z-10">
-               <div className="flex justify-between items-center bg-[#171a21]/80 p-3 rounded border border-white/5">
-                  <span className="font-bold text-gray-300">Steam Level</span>
-                  <div className="w-10 h-10 border-2 border-[#00A8E8] rounded-full flex items-center justify-center font-bold text-lg text-white" style={{boxShadow: '0 0 10px #00A8E8'}}>28</div>
+            <div className="flex-1 w-full flex flex-col gap-4 z-10 justify-center h-full mt-4 md:mt-0">
+               <div className="flex justify-between items-center bg-[#171a21] p-3 md:p-4 border-l-4 border-[#66c0f4] shadow-[4px_4px_0_rgba(0,0,0,0.5)] transform skew-x-[-5deg]">
+                  <span className="font-bold text-white uppercase tracking-wider skew-x-[5deg]">Steam Level</span>
+                  <div className="w-12 h-12 border-2 border-[#66c0f4] rounded-full flex items-center justify-center font-black text-xl text-white skew-x-[5deg] shadow-[0_0_10px_#66c0f4]">28</div>
                </div>
 
-               <div className="grid grid-cols-2 gap-2 text-sm text-gray-300">
-                  <div className="bg-[#171a21]/80 p-2 rounded border border-white/5 flex justify-between"><span>Badges</span><span className="text-white font-bold">25</span></div>
-                  <div className="bg-[#171a21]/80 p-2 rounded border border-white/5 flex justify-between"><span>Games</span><span className="text-white font-bold">92</span></div>
-                  <div className="bg-[#171a21]/80 p-2 rounded border border-white/5 flex justify-between"><span>Screenshots</span><span className="text-white font-bold">77</span></div>
-                  <div className="bg-[#171a21]/80 p-2 rounded border border-white/5 flex justify-between"><span>Reviews</span><span className="text-white font-bold">5</span></div>
+               <div className="grid grid-cols-2 gap-3 text-sm text-gray-300 mt-2">
+                  <div className="bg-[#171a21]/80 p-3 border-b-2 border-white/10 flex flex-col items-center justify-center">
+                    <span className="text-xs uppercase tracking-widest text-[#66c0f4]">Badges</span>
+                    <span className="text-2xl text-white font-black italic">25</span>
+                  </div>
+                  <div className="bg-[#171a21]/80 p-3 border-b-2 border-white/10 flex flex-col items-center justify-center">
+                    <span className="text-xs uppercase tracking-widest text-[#66c0f4]">Games</span>
+                    <span className="text-2xl text-white font-black italic">142</span>
+                  </div>
                </div>
 
                <div className="bg-gradient-to-r from-[#8b0000] to-[#4a0000] p-4 rounded border border-red-500/30">
@@ -105,23 +112,69 @@ export default function HobbyMode() {
           </motion.div>
 
           {/* Discord Card */}
-          <motion.div whileHover={{ scale: 1.02 }} className="bg-[#2b2d31] border-2 border-[#1e1f22] p-0 relative overflow-hidden group shadow-[0_0_15px_rgba(43,45,49,0.5)] flex flex-col rounded-xl">
-            <div className="h-24 bg-gradient-to-r from-[#17181c] to-[#0a1128]"></div>
-            <div className="px-4 pb-4 relative flex-1 flex flex-col">
-               <div className="w-20 h-20 rounded-full border-4 border-[#2b2d31] bg-black -mt-10 relative overflow-hidden shrink-0">
-                  <img src="./discord-avatar.png" alt="levy77" className="w-full h-full object-cover" />
-                  <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-[#2b2d31] rounded-full"></div>
-               </div>
-               <h2 className="text-xl font-bold text-white mt-2">levy77</h2>
-               <p className="text-xs text-gray-400 mb-4">Member Since May 31, 2016</p>
-               
-               <div className="bg-[#1e1f22] rounded-lg p-3 flex-1 flex flex-col gap-2">
-                  <p className="text-xs font-bold uppercase text-gray-400 mb-1">Connections</p>
-                  <div className="flex items-center gap-2 text-sm text-gray-300"><span className="w-5 h-5 bg-white text-black flex items-center justify-center rounded-full text-xs font-bold">GH</span> levyan77</div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300"><span className="w-5 h-5 bg-[#171a21] text-white flex items-center justify-center rounded-full text-xs font-bold border border-white/20">St</span> Nizama</div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300"><span className="w-5 h-5 bg-green-500 text-white flex items-center justify-center rounded-full text-xs font-bold">Xb</span> n1zama</div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300"><span className="w-5 h-5 bg-red-600 text-white flex items-center justify-center rounded-full text-xs font-bold">YT</span> nizeboi gudboi</div>
-               </div>
+          <motion.div whileHover={{ scale: 1.02 }} 
+            className="bg-[#1e1f22] p-6 md:p-8 border-t-4 border-[#5865F2] shadow-[-5px_5px_0_rgba(88,101,242,0.3)] flex flex-col gap-6 relative group"
+            style={{ clipPath: 'polygon(30px 0, 100% 0, 100% 100%, 0 100%, 0 30px)' }}
+          >
+            {/* Background Accent */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#5865F2]/5 rounded-bl-full pointer-events-none group-hover:scale-150 transition-transform duration-500"></div>
+
+            {/* Profile Section */}
+            <div className="flex items-center gap-4 relative z-10">
+              <div className="relative">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-[#5865F2] shadow-[0_0_10px_#5865F2]">
+                  <img src="./discord-avatar.png" alt="Discord Avatar" className="w-full h-full object-cover" />
+                </div>
+                {/* Status indicator */}
+                <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 border-4 border-[#1e1f22] rounded-full shadow-[0_0_5px_#22c55e]"></div>
+              </div>
+              <div>
+                <h2 className="text-xl md:text-2xl font-black italic text-white drop-shadow-[2px_2px_0_#5865F2]">levy77</h2>
+                <div className="flex gap-2 mt-2">
+                  <span className="bg-[#2b2d31] text-[#dbdee1] text-[10px] md:text-xs px-2 py-1 uppercase tracking-widest font-bold border-l-2 border-[#5865F2]">Active</span>
+                  <span className="bg-[#2b2d31] text-[#dbdee1] text-[10px] md:text-xs px-2 py-1 uppercase tracking-widest font-bold">Since May 2016</span>
+                </div>
+              </div>
+            </div>
+
+            <hr className="border-[#2b2d31]" />
+
+            {/* Connections */}
+            <div className="relative z-10">
+              <h3 className="text-xs uppercase tracking-widest font-bold text-[#b5bac1] mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#5865F2] inline-block transform rotate-45"></span>
+                Connections
+              </h3>
+              <div className="flex flex-col gap-3">
+                 <div className="flex items-center justify-between bg-[#2b2d31] p-3 border-l-2 border-white group-hover:border-[#5865F2] transition-colors">
+                    <div className="flex items-center gap-3">
+                       <span className="text-xl">🐙</span>
+                       <span className="font-bold text-[#dbdee1]">GitHub</span>
+                    </div>
+                    <span className="text-sm text-[#949ba4] font-medium">levyan77</span>
+                 </div>
+                 <div className="flex items-center justify-between bg-[#2b2d31] p-3 border-l-2 border-[#66c0f4] group-hover:border-[#5865F2] transition-colors">
+                    <div className="flex items-center gap-3">
+                       <span className="text-xl">🎮</span>
+                       <span className="font-bold text-[#dbdee1]">Steam</span>
+                    </div>
+                    <span className="text-sm text-[#949ba4] font-medium">Nizama</span>
+                 </div>
+                 <div className="flex items-center justify-between bg-[#2b2d31] p-3 border-l-2 border-[#107c10] group-hover:border-[#5865F2] transition-colors">
+                    <div className="flex items-center gap-3">
+                       <span className="text-xl">❌</span>
+                       <span className="font-bold text-[#dbdee1]">Xbox</span>
+                    </div>
+                    <span className="text-sm text-[#949ba4] font-medium">n1zama</span>
+                 </div>
+                 <div className="flex items-center justify-between bg-[#2b2d31] p-3 border-l-2 border-[#ff0000] group-hover:border-[#5865F2] transition-colors">
+                    <div className="flex items-center gap-3">
+                       <span className="text-xl">▶️</span>
+                       <span className="font-bold text-[#dbdee1]">YouTube</span>
+                    </div>
+                    <span className="text-sm text-[#949ba4] font-medium">nizeboi gudboi</span>
+                 </div>
+              </div>
             </div>
           </motion.div>
 
@@ -189,32 +242,53 @@ export default function HobbyMode() {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-             {/* Games Array Rendering */}
-             {[
-               { name: 'Dota 2', stat: '37% Playtime • 5d ago', tag: 'Favorite Game', color: 'from-red-900/80 to-black', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/header.jpg' },
-               { name: 'Ys IX: Monstrum Nox', stat: 'Favorite', tag: 'Steam Favorite', color: 'from-purple-900/80 to-black', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1351630/header.jpg' },
-               { name: 'Arknights', stat: '5d ago', tag: 'In Rotation', color: 'from-blue-900/80 to-black', image: './games/arknights.jpg' },
-               { name: 'ARKNIGHTS: ENDFIELD', stat: '4w ago', tag: 'In Rotation', color: 'from-gray-700/80 to-black', image: './games/endfield.jpg' },
-               { name: 'Honkai: Star Rail', stat: '6d ago', tag: 'In Rotation', color: 'from-pink-900/80 to-black', image: './games/hsr.jpg' },
-               { name: 'Genshin Impact', stat: '2w ago', tag: 'In Rotation', color: 'from-emerald-900/80 to-black', image: './games/genshin.jpg' },
-               { name: 'Zenless Zone Zero', stat: '6d ago', tag: 'In Rotation', color: 'from-yellow-600/80 to-black', image: './games/zzz.jpg' },
-               { name: 'Uma Musume Pretty Derby', stat: '24% Playtime', tag: 'Steam Replay', color: 'from-green-600/80 to-black', image: './games/uma.jpg' },
-               { name: 'Marvel Rivals', stat: '24% Playtime', tag: 'Steam Replay', color: 'from-blue-600/80 to-black', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2767030/header.jpg' },
-               { name: 'DRAGON BALL: Sparking! ZERO', stat: '8% Playtime', tag: 'Steam Replay', color: 'from-orange-600/80 to-black', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1790600/header.jpg' },
-               { name: 'Counter-Strike', stat: '3% Playtime', tag: 'Steam Replay', color: 'from-yellow-800/80 to-black', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/10/header.jpg' },
-             ].map((game, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[
+              { name: 'Dota 2', stat: '37% Playtime • 5d ago', tag: 'Favorite Game', color: 'from-red-900/90 to-black', border: 'border-red-500', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/header.jpg' },
+              { name: 'Ys IX: Monstrum Nox', stat: 'Favorite', tag: 'Steam Favorite', color: 'from-purple-900/90 to-black', border: 'border-purple-500', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1351630/header.jpg' },
+              { name: 'Arknights', stat: '5d ago', tag: 'In Rotation', color: 'from-blue-900/90 to-black', border: 'border-blue-500', image: './games/arknights.jpg' },
+              { name: 'ARKNIGHTS: ENDFIELD', stat: '4w ago', tag: 'In Rotation', color: 'from-gray-700/90 to-black', border: 'border-gray-400', image: './games/endfield.jpg' },
+              { name: 'Honkai: Star Rail', stat: '6d ago', tag: 'In Rotation', color: 'from-pink-900/90 to-black', border: 'border-pink-500', image: './games/hsr.jpg' },
+              { name: 'Genshin Impact', stat: '2w ago', tag: 'In Rotation', color: 'from-emerald-900/90 to-black', border: 'border-emerald-500', image: './games/genshin.jpg' },
+              { name: 'Zenless Zone Zero', stat: '6d ago', tag: 'In Rotation', color: 'from-yellow-600/90 to-black', border: 'border-yellow-500', image: './games/zzz.jpg' },
+              { name: 'Uma Musume Pretty Derby', stat: '24% Playtime', tag: 'Steam Replay', color: 'from-green-600/90 to-black', border: 'border-green-500', image: './games/uma.jpg' },
+              { name: 'Marvel Rivals', stat: '24% Playtime', tag: 'Steam Replay', color: 'from-blue-600/90 to-black', border: 'border-blue-400', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2767030/header.jpg' },
+              { name: 'DRAGON BALL: Sparking! ZERO', stat: '8% Playtime', tag: 'Steam Replay', color: 'from-orange-600/90 to-black', border: 'border-orange-500', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1790600/header.jpg' },
+              { name: 'Counter-Strike', stat: '3% Playtime', tag: 'Steam Replay', color: 'from-yellow-800/90 to-black', border: 'border-yellow-600', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/10/header.jpg' },
+            ].map((game, i) => (
                <motion.div 
                  key={i} 
-                 whileHover={{ scale: 1.05 }}
-                 className={`h-32 bg-gradient-to-t ${game.color} border border-white/10 rounded-lg p-4 flex flex-col justify-end relative overflow-hidden group shadow-lg`}
+                 whileHover={{ y: -5, scale: 1.03 }}
+                 className={`relative group cursor-pointer aspect-[4/5] md:aspect-video flex flex-col justify-end p-4 shadow-xl transition-all duration-300`}
+                 style={{
+                   clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)' // P3 corner cut
+                 }}
                >
-                 {game.image && <img src={game.image} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay group-hover:opacity-60 transition-opacity duration-300" alt={game.name} />}
-                 <div className="absolute top-2 right-2 bg-black/80 px-2 py-1 rounded text-[10px] font-bold text-gray-300 uppercase z-10">{game.tag}</div>
-                 <h3 className="font-bold text-white text-sm md:text-base leading-tight z-10 drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">{game.name}</h3>
-                 <p className="text-xs text-[#00A8E8] font-bold mt-1 z-10 drop-shadow-[0_1px_1px_rgba(0,0,0,1)] bg-black/40 w-fit px-1 rounded">{game.stat}</p>
+                 {/* Outer Border Layer */}
+                 <div className={`absolute inset-0 border-2 ${game.border} opacity-50 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none`}
+                      style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)' }}
+                 ></div>
+                 
+                 {/* Image Background */}
+                 <div className="absolute inset-0 z-0 bg-black">
+                   <img src={game.image} alt={game.name} className="w-full h-full object-cover opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" />
+                   {/* Gradient Overlay for text readability */}
+                   <div className={`absolute inset-0 bg-gradient-to-t ${game.color} opacity-90 group-hover:opacity-50 transition-opacity duration-300`}></div>
+                 </div>
+                 
+                 {/* Content */}
+                 <div className="relative z-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                   <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider bg-white text-black px-2 py-1 transform -skew-x-12 inline-block mb-2 shadow-[2px_2px_0_#00A8E8] group-hover:shadow-[2px_2px_0_#fff]">
+                     {game.tag}
+                   </span>
+                   <h4 className="font-black italic text-white leading-tight drop-shadow-md text-base md:text-lg">{game.name}</h4>
+                   <p className="text-xs text-[#00A8E8] mt-1 drop-shadow font-semibold tracking-widest uppercase">{game.stat}</p>
+                 </div>
+                 
+                 {/* Diagonal scanline overlay on hover */}
+                 <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-10 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,#fff_2px,#fff_4px)] transition-opacity duration-300 pointer-events-none"></div>
                </motion.div>
-             ))}
+            ))}
           </div>
         </div>
       </motion.div>
