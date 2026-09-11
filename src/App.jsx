@@ -15,6 +15,7 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [pendingMode, setPendingMode] = useState(null);
   const sfxRef = React.useRef(null);
+  const glassSfxRef = React.useRef(null);
 
   const getNextMode = (current) => {
     if (current === 'professional') return 'hobby';
@@ -25,7 +26,10 @@ function App() {
   const switchMode = (newMode) => {
     if (newMode === mode || isTransitioning) return;
     
-    if (sfxRef.current) {
+    if (newMode === 'metaverse' && glassSfxRef.current) {
+      glassSfxRef.current.currentTime = 0;
+      glassSfxRef.current.play().catch(e => console.log('SFX block', e));
+    } else if (sfxRef.current) {
       sfxRef.current.currentTime = 0;
       sfxRef.current.play().catch(e => console.log('SFX block', e));
     }
@@ -133,6 +137,7 @@ function App() {
 
       {/* SFX Audio */}
       <audio ref={sfxRef} src="./transition-sfx.mp3" style={{ display: 'none' }} />
+      <audio ref={glassSfxRef} src="./glass-sfx.mp3" style={{ display: 'none' }} />
     </div>
   );
 }
