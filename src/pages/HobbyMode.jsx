@@ -14,9 +14,28 @@ export default function HobbyMode() {
   return (
     <div className="w-full text-white min-h-screen relative z-20 px-4 pt-24 pb-24 md:p-8 md:pt-24">
       {/* Dynamic P3 Background Water/Dots Effect */}
-      <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none opacity-30">
-        <div className="w-full h-full bg-[radial-gradient(circle_at_center,_#00A8E8_0%,_transparent_70%)] opacity-20 animate-pulse"></div>
-        <div className="absolute top-10 right-10 w-64 h-64 border-[20px] border-[#00A8E8] rounded-full opacity-10 animate-spin-slow"></div>
+      <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-[#050505]">
+        {/* Diagonal scanlines */}
+        <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,#00A8E8,#00A8E8_2px,transparent_2px,transparent_15px)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_rgba(0,168,232,0.2)_0%,_transparent_60%)]"></div>
+        
+        {/* Persona shapes */}
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-32 -right-32 w-[600px] h-[600px] border-[60px] border-[#00A8E8]/10 rounded-full"
+        />
+        <motion.div 
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-20 left-10 text-[10rem] text-[#00A8E8]/5 font-black italic select-none leading-none -rotate-12"
+        >
+          RELOAD
+        </motion.div>
+        
+        {/* Floating crosshairs */}
+        <div className="absolute top-1/4 left-[10%] text-[#00A8E8]/30 font-mono tracking-[1em] text-xl">+ + +</div>
+        <div className="absolute bottom-1/3 right-[10%] text-[#00A8E8]/30 font-mono tracking-[1em] text-xl">+ + +</div>
       </div>
 
       <motion.div 
@@ -25,11 +44,17 @@ export default function HobbyMode() {
         transition={{ duration: 0.8 }}
         className="flex flex-col gap-8 max-w-6xl mx-auto"
       >
-        <div className="border-l-8 border-[#00A8E8] pl-6 py-2 mb-4 bg-gradient-to-r from-black/80 to-transparent">
-          <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase text-white drop-shadow-[4px_4px_0_#00A8E8]">
-            ME TIME
-          </h1>
-          <p className="text-[#00A8E8] font-bold tracking-widest uppercase mt-2">Gaming & Hobbies</p>
+        <div className="relative pl-6 md:pl-8 py-4 mb-8">
+           {/* Angled vertical bar */}
+           <div className="absolute top-0 left-0 w-3 md:w-4 h-full bg-[#00A8E8] transform skew-x-[-15deg]"></div>
+           <h1 className="text-5xl md:text-8xl font-black italic tracking-tighter uppercase text-white drop-shadow-[5px_5px_0_#00A8E8] relative z-10">
+             ME TIME
+           </h1>
+           {/* Horizontal underline fade */}
+           <div className="absolute bottom-2 left-6 md:left-8 w-2/3 h-[3px] bg-gradient-to-r from-[#00A8E8] to-transparent"></div>
+           <p className="text-[#00A8E8] font-bold tracking-widest uppercase mt-3 transform skew-x-[-10deg] ml-2 md:text-xl">
+             ► Gaming & Hobbies
+           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -154,10 +179,14 @@ export default function HobbyMode() {
 
         {/* --- GAME LIBRARY SECTION --- */}
         <div className="mt-12">
-          <div className="border-l-8 border-red-600 pl-6 py-2 mb-6 bg-gradient-to-r from-red-900/40 to-transparent">
-            <h2 className="text-3xl font-black italic tracking-tighter uppercase text-white drop-shadow-[2px_2px_0_#dc2626]">
-              GAME ACTIVITY & LIBRARY
-            </h2>
+          <div className="mt-12 mb-6">
+            <div className="relative inline-block pl-6 md:pl-8 py-2">
+              <div className="absolute top-0 left-0 w-3 h-full bg-red-600 transform skew-x-[-15deg]"></div>
+              <h3 className="text-3xl md:text-4xl font-black italic text-white drop-shadow-[3px_3px_0_#dc2626] uppercase">
+                Game Activity & Library
+              </h3>
+              <div className="absolute bottom-0 left-6 md:left-8 w-full h-[2px] bg-gradient-to-r from-red-600 to-transparent"></div>
+            </div>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
