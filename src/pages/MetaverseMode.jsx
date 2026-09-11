@@ -3,62 +3,65 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MetaverseMode() {
   const [gameState, setGameState] = useState('start'); // start, playing, won, lost
-  const [level, setLevel] = useState(1);
-  const [cursorPos, setCursorPos] = useState(50);
-  const [direction, setDirection] = useState(1);
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(5.0); // 5 seconds
   
-  const requestRef = useRef(null);
-  
-  // Game config based on level
-  const speed = level === 1 ? 1.5 : level === 2 ? 2.5 : 4.0;
-  const targetWidth = level === 1 ? 20 : level === 2 ? 12 : 6;
-  const targetStart = 50 - (targetWidth / 2);
-  const targetEnd = 50 + (targetWidth / 2);
-
-  const animate = () => {
-    setCursorPos(prev => {
-      let nextPos = prev + (speed * direction);
-      if (nextPos >= 100) {
-        nextPos = 100;
-        setDirection(-1);
-      } else if (nextPos <= 0) {
-        nextPos = 0;
-        setDirection(1);
-      }
-      return nextPos;
-    });
-    requestRef.current = requestAnimationFrame(animate);
-  };
+  const timerRef = useRef(null);
 
   useEffect(() => {
     if (gameState === 'playing') {
-      requestRef.current = requestAnimationFrame(animate);
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 0.1) {
+            clearInterval(timerRef.current);
+            if (score >= 100) {
+              setGameState('won');
+            } else {
+              setGameState('lost');
+            }
+            return 0;
+          }
+          return +(prev - 0.1).toFixed(1);
+        });
+      }, 100);
     }
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [gameState, direction, speed]);
+    return () => clearInterval(timerRef.current);
+  }, [gameState, score]);
 
-  const handleAction = () => {
-    if (gameState === 'start') {
-      setGameState('playing');
-      setLevel(1);
-    } else if (gameState === 'playing') {
-      if (cursorPos >= targetStart && cursorPos <= targetEnd) {
-        if (level === 3) {
-          setGameState('won');
-        } else {
-          setLevel(level + 1);
-        }
-      } else {
-        setGameState('lost');
+  // Win condition during play
+  useEffect(() => {
+    if (gameState === 'playing' && score >= 100) {
+      clearInterval(timerRef.current);
+      setGameState('won');
+    }
+  }, [score, gameState]);
+
+  // Keyboard support for mashing
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' && gameState === 'playing') {
+        e.preventDefault(); // prevent scrolling
+        hit();
       }
-    } else if (gameState === 'lost' || gameState === 'won') {
-      setGameState('start');
-      setLevel(1);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [gameState]);
+
+  const startGame = () => {
+    setScore(0);
+    setTimeLeft(5.0);
+    setGameState('playing');
+  };
+
+  const hit = () => {
+    if (gameState === 'playing') {
+      setScore(s => Math.min(s + 5, 100)); // Need 20 clicks in 5 seconds
     }
   };
 
   return (
-    <div className="w-full text-white min-h-screen relative z-20 px-4 pt-24 pb-24 md:p-8 md:pt-24 overflow-hidden bg-[#a30000]">
+    <div className="w-full text-white min-h-screen relative z-20 px-4 pt-24 pb-24 md:p-8 md:pt-24 overflow-hidden bg-[#a30000] flex flex-col items-center">
       {/* Background Graphic Elements */}
       <div className="fixed inset-0 z-[-1] pointer-events-none">
         {/* Halftone dots overlay */}
@@ -83,7 +86,7 @@ export default function MetaverseMode() {
         initial={{ scale: 1.2, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
-        className="flex flex-col items-center gap-10 max-w-4xl mx-auto mt-10"
+        className="flex flex-col items-center gap-10 max-w-4xl w-full mx-auto mt-10"
       >
         <div className="relative inline-block rotate-[-3deg] transform-gpu">
           <div className="absolute -inset-4 bg-black transform rotate-2"></div>
@@ -92,63 +95,111 @@ export default function MetaverseMode() {
             METAVERSE
           </h1>
           <div className="absolute -bottom-10 right-0 bg-[#e50000] text-white px-4 py-1 text-2xl font-black italic shadow-[-5px_5px_0_black] transform rotate-6 border-4 border-black">
-            LAB & EXPERIMENTS
+            ALL-OUT ATTACK
           </div>
         </div>
 
-        <div className="mt-20 w-full max-w-2xl bg-black border-4 border-white p-6 shadow-[10px_10px_0_#e50000] transform skew-x-[-2deg] relative">
+        <div className="mt-20 w-full max-w-2xl bg-black border-4 border-white p-8 shadow-[10px_10px_0_#e50000] transform skew-x-[-2deg] relative z-10">
           <div className="absolute -top-6 -left-6 bg-white text-black font-black text-xl px-4 py-1 border-4 border-black transform -rotate-6">
-            PHANTOM LOCKPICKER
+            COMBAT SIMULATOR
           </div>
 
           <div className="text-center mt-6 mb-8 text-white">
-            {gameState === 'start' && <p className="text-xl italic font-bold">Infiltrate the Palace. Tap when inside the red zone!</p>}
-            {gameState === 'playing' && <p className="text-2xl font-black">SECURITY LEVEL: {level}</p>}
-            {gameState === 'won' && <p className="text-2xl font-black text-[#e50000] animate-pulse">HEART STOLEN!</p>}
-            {gameState === 'lost' && <p className="text-2xl font-black text-gray-400">AMBUSHED!</p>}
+            {gameState === 'start' && <p className="text-xl italic font-bold">The enemy is vulnerable! Mash Spacebar or Click rapidly!</p>}
+            {gameState === 'playing' && (
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-4xl font-black text-white">{timeLeft}s</p>
+                <p className="text-lg text-gray-400 uppercase tracking-widest font-bold">Time Remaining</p>
+              </div>
+            )}
+            {gameState === 'won' && <p className="text-2xl font-black text-[#e50000] animate-pulse">ENEMY DEFEATED!</p>}
+            {gameState === 'lost' && <p className="text-2xl font-black text-gray-400">NOT ENOUGH DAMAGE!</p>}
           </div>
 
-          {/* Game Bar */}
-          <div className="w-full h-12 bg-white/20 border-2 border-white relative overflow-hidden my-8 rounded-full shadow-inner">
-            {/* Target Zone */}
-            <div 
-              className="absolute h-full bg-[#e50000] border-x-4 border-black"
-              style={{ left: `${targetStart}%`, width: `${targetWidth}%` }}
+          {/* Progress Bar */}
+          <div className="w-full h-12 bg-white/10 border-2 border-white relative overflow-hidden my-8 shadow-inner transform skew-x-[-10deg]">
+            <motion.div 
+              className="absolute top-0 left-0 h-full bg-[#e50000]"
+              initial={{ width: 0 }}
+              animate={{ width: `${score}%` }}
+              transition={{ type: "tween", duration: 0.1 }}
             >
-              <div className="w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_5px,black_5px,black_10px)] opacity-30"></div>
+               <div className="w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,black_10px,black_20px)] opacity-20"></div>
+            </motion.div>
+            <div className="absolute inset-0 flex items-center justify-center mix-blend-difference text-white font-black text-2xl z-10">
+              {score}%
             </div>
-            
-            {/* Cursor */}
-            <div 
-              className="absolute h-full w-2 bg-white shadow-[0_0_15px_white] z-10"
-              style={{ left: `${cursorPos}%`, transform: 'translateX(-50%)' }}
-            ></div>
           </div>
 
           <div className="flex justify-center mt-8">
-            <button 
-              onClick={handleAction}
-              className="bg-white text-black text-3xl font-black italic px-8 py-3 transform rotate-2 hover:rotate-0 hover:bg-[#e50000] hover:text-white transition-all border-4 border-black shadow-[5px_5px_0_black]"
-            >
-              {gameState === 'start' ? 'START HEIST' : gameState === 'playing' ? 'PICK LOCK!' : 'TRY AGAIN'}
-            </button>
-          </div>
-          
-          <AnimatePresence>
-            {gameState === 'won' && (
-               <motion.div 
-                 initial={{ opacity: 0, y: 50, rotate: 10 }}
-                 animate={{ opacity: 1, y: 0, rotate: -2 }}
-                 className="absolute inset-0 bg-black border-4 border-white p-6 z-50 flex flex-col items-center justify-center text-center"
-               >
-                 <h2 className="text-4xl md:text-6xl font-black text-[#e50000] mb-4 drop-shadow-[2px_2px_0_white]">MISSION ACCOMPLISHED</h2>
-                 <p className="text-white text-lg mb-6 max-w-md">You've successfully cracked the lock! Stay tuned for more interactive experiments and web dev illusions.</p>
-                 <button onClick={() => setGameState('start')} className="bg-[#e50000] text-white px-6 py-2 font-bold italic border-2 border-white hover:scale-105">RETURN TO SHADOWS</button>
-               </motion.div>
+            {gameState === 'start' || gameState === 'lost' || gameState === 'won' ? (
+              <button 
+                onClick={startGame}
+                className="bg-white text-black text-3xl font-black italic px-10 py-4 transform rotate-2 hover:rotate-0 hover:bg-[#e50000] hover:text-white transition-all border-4 border-black shadow-[5px_5px_0_black]"
+              >
+                {gameState === 'start' ? 'INITIATE ATTACK' : 'TRY AGAIN'}
+              </button>
+            ) : (
+              <motion.button 
+                whileTap={{ scale: 0.9, rotate: Math.random() * 10 - 5 }}
+                onClick={hit}
+                className="bg-[#e50000] text-white text-5xl font-black italic px-16 py-8 border-8 border-white shadow-[10px_10px_0_black] select-none touch-manipulation"
+              >
+                MASH!
+              </motion.button>
             )}
-          </AnimatePresence>
+          </div>
         </div>
       </motion.div>
+
+      {/* Epic Win Screen Overlay */}
+      <AnimatePresence>
+        {gameState === 'won' && (
+           <motion.div 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+           >
+             {/* Blood splash background */}
+             <motion.div 
+               initial={{ scale: 0 }}
+               animate={{ scale: 100 }}
+               transition={{ duration: 0.5, ease: "easeIn" }}
+               className="absolute w-10 h-10 bg-[#a30000] rounded-full"
+             />
+             
+             {/* Cool Text */}
+             <motion.div 
+               initial={{ x: -1000, skewX: -30 }}
+               animate={{ x: 0, skewX: -10 }}
+               transition={{ type: "spring", damping: 12, delay: 0.3 }}
+               className="relative z-10 bg-black text-white px-12 py-6 border-y-8 border-white shadow-[20px_20px_0_rgba(0,0,0,0.5)] flex flex-col items-center"
+             >
+                <h2 className="text-6xl md:text-8xl font-black italic mb-2 tracking-tighter">THE SHOW'S OVER</h2>
+                <div className="w-full h-2 bg-[#e50000] mb-4"></div>
+                <p className="text-xl font-bold tracking-widest text-gray-400">FATAL STRIKE SUCCESSFUL</p>
+             </motion.div>
+
+             {/* Stars */}
+             {[...Array(5)].map((_, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ scale: 0, x: 0, y: 0, rotate: 0 }}
+                  animate={{ 
+                    scale: [0, 2, 0], 
+                    x: (Math.random() - 0.5) * 1000, 
+                    y: (Math.random() - 0.5) * 1000,
+                    rotate: 360 
+                  }}
+                  transition={{ duration: 1, delay: 0.4 + (i * 0.1) }}
+                  className="absolute text-[#facc15] text-8xl z-10 drop-shadow-[0_0_20px_#facc15]"
+                >
+                  ★
+                </motion.div>
+             ))}
+           </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

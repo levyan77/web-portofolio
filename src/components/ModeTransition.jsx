@@ -51,6 +51,38 @@ export default function ModeTransition({ isTriggered, onComplete, targetMode }) 
           >
              <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,transparent,transparent_20px,#fff_20px,#fff_40px)]"></div>
           </motion.div>
+
+          {/* SHATTERED GLASS EFFECT FOR METAVERSE */}
+          {targetMode === 'metaverse' && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
+               {/* Impact Flash */}
+               <motion.div 
+                 initial={{ scale: 0, opacity: 1 }} 
+                 animate={{ scale: 20, opacity: 0 }} 
+                 transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }} 
+                 className="absolute w-10 h-10 bg-white rounded-full"
+               />
+               
+               {/* Shards */}
+               {[
+                 { clip: 'polygon(50% 50%, 0 0, 100% 0)', x: 0, y: -800, r: 45 },
+                 { clip: 'polygon(50% 50%, 100% 0, 100% 100%)', x: 800, y: 0, r: 90 },
+                 { clip: 'polygon(50% 50%, 100% 100%, 0 100%)', x: 0, y: 800, r: 135 },
+                 { clip: 'polygon(50% 50%, 0 100%, 0 0)', x: -800, y: 0, r: -90 },
+                 { clip: 'polygon(50% 50%, 20% 0, 0 30%)', x: -600, y: -600, r: -45 },
+                 { clip: 'polygon(50% 50%, 100% 30%, 80% 100%)', x: 600, y: 600, r: 120 }
+               ].map((shard, i) => (
+                 <motion.div 
+                   key={i}
+                   initial={{ x: 0, y: 0, rotate: 0, opacity: 0.8 }}
+                   animate={{ x: shard.x, y: shard.y, rotate: shard.r, opacity: 0 }}
+                   transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                   className="absolute inset-[-20%] w-[140%] h-[140%] bg-white"
+                   style={{ clipPath: shard.clip }}
+                 />
+               ))}
+            </div>
+          )}
           
           {/* Primary Color Layer */}
           <motion.div
