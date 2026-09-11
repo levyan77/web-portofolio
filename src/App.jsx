@@ -5,15 +5,22 @@ import ProjectGallery from './components/ProjectGallery';
 import About from './components/About';
 import Experience from './components/Experience';
 import MusicPlayer from './components/MusicPlayer';
-import P3Transition from './components/P3Transition';
+import ModeTransition from './components/ModeTransition';
 import HobbyMode from './pages/HobbyMode';
+import MetaverseMode from './pages/MetaverseMode';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
-  const [mode, setMode] = useState('professional'); // 'professional' | 'hobby'
+  const [mode, setMode] = useState('professional'); // 'professional' | 'hobby' | 'metaverse'
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [pendingMode, setPendingMode] = useState(null);
   const sfxRef = React.useRef(null);
+
+  const getNextMode = (current) => {
+    if (current === 'professional') return 'hobby';
+    if (current === 'hobby') return 'metaverse';
+    return 'professional';
+  };
 
   const switchMode = (newMode) => {
     if (newMode === mode || isTransitioning) return;
@@ -30,32 +37,57 @@ function App() {
   const onTransitionHalfway = () => {
     setMode(pendingMode);
     if (pendingMode === 'hobby') {
-      document.body.style.backgroundColor = '#050505'; // Darker for P3
+      document.body.style.backgroundColor = '#050505';
+    } else if (pendingMode === 'metaverse') {
+      document.body.style.backgroundColor = '#1a0000';
     } else {
       document.body.style.backgroundColor = '#000000';
     }
   };
 
+  const nextMode = getNextMode(mode);
+  
+  const getButtonStyles = () => {
+    if (mode === 'professional') {
+      return {
+        bgClass: 'bg-yellow-400 text-black border-black hover:bg-black hover:text-yellow-400',
+        shadow: 'shadow-[-4px_4px_0_#fff] md:shadow-[4px_4px_0_#fff]',
+        text: 'SWITCH TO ME TIME'
+      };
+    } else if (mode === 'hobby') {
+      return {
+        bgClass: 'bg-[#00A8E8] text-white border-white hover:bg-white hover:text-[#00A8E8]',
+        shadow: 'shadow-[-4px_4px_0_#00A8E8] md:shadow-[4px_4px_0_#00A8E8]',
+        text: 'ENTER METAVERSE'
+      };
+    } else {
+      return {
+        bgClass: 'bg-[#e50000] text-white border-white hover:bg-white hover:text-[#e50000]',
+        shadow: 'shadow-[-4px_4px_0_#e50000] md:shadow-[4px_4px_0_#e50000]',
+        text: 'RETURN TO REALITY'
+      };
+    }
+  };
+
+  const btnStyles = getButtonStyles();
+
   return (
-    <div className={`min-h-screen relative overflow-hidden transition-colors duration-1000 ${mode === 'hobby' ? 'bg-[#050505]' : 'bg-black'}`}>
+    <div className={`min-h-screen relative overflow-hidden transition-colors duration-1000 ${mode === 'hobby' ? 'bg-[#050505]' : mode === 'metaverse' ? 'bg-[#1a0000]' : 'bg-black'}`}>
       
-      <P3Transition 
+      <ModeTransition 
         isTriggered={isTransitioning} 
         onComplete={onTransitionHalfway} 
+        targetMode={pendingMode}
       />
 
       {/* Button Switch Mode */}
       <div className="fixed bottom-24 right-0 md:bottom-12 md:right-12 z-50">
         <button 
-          onClick={() => switchMode(mode === 'professional' ? 'hobby' : 'professional')}
-          className={`flex items-center gap-2 pl-3 pr-5 py-3 md:px-6 md:py-4 font-black italic uppercase tracking-wider border-2 border-r-0 md:border-r-2 transition-transform duration-500 ease-out translate-x-[calc(100%-3rem)] hover:translate-x-0 active:translate-x-0 md:translate-x-0 rounded-l-xl md:rounded-none ${
-            mode === 'professional' 
-              ? 'bg-yellow-400 text-black border-black hover:bg-black hover:text-yellow-400 shadow-[-4px_4px_0_#fff] md:shadow-[4px_4px_0_#fff]' 
-              : 'bg-[#00A8E8] text-white border-white hover:bg-white hover:text-[#00A8E8] shadow-[-4px_4px_0_#00A8E8] md:shadow-[4px_4px_0_#00A8E8]'
-          }`}
+          onClick={() => switchMode(nextMode)}
+          className={`flex items-center gap-2 pl-3 pr-5 py-3 md:px-6 md:py-4 font-black italic uppercase tracking-wider border-2 border-r-0 md:border-r-2 transition-transform duration-500 ease-out translate-x-[calc(100%-3rem)] hover:translate-x-0 active:translate-x-0 md:translate-x-0 rounded-l-xl md:rounded-none ${btnStyles.bgClass} ${btnStyles.shadow}`}
         >
           <span className="text-lg md:hidden">◀</span>
-          <span className="whitespace-nowrap">{mode === 'professional' ? 'SWITCH TO ME TIME' : 'SWITCH TO PRO MODE'}</span>
+          <span className="whitespace-nowrap">{btnStyles.text}</span>
         </button>
       </div>
 
@@ -90,8 +122,10 @@ function App() {
             <div className="absolute bottom-1/4 left-[-10%] w-[120%] h-64 bg-white opacity-20 transform rotate-6 blur-2xl"></div>
           </div>
         </>
-      ) : (
+      ) : mode === 'hobby' ? (
         <HobbyMode />
+      ) : (
+        <MetaverseMode />
       )}
 
       {/* Reset transitioning state after animation completes */}

@@ -1,40 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MusicPlayer = ({ mode = 'professional' }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(1.0);
+  const [showVolume, setShowVolume] = useState(false);
   const audioRef = useRef(null);
   const hasAutoPlayed = useRef(false);
 
-  // Audio paths based on mode
-  const currentAudioSrc = mode === 'professional' ? './bgm.mp3' : './bgm_hobby.mp3';
-
-  // Playback control when switching modes
+  // Sync mode changes to the audio element and volume
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.load();
-      audioRef.current.volume = mode === 'hobby' ? 0.3 : 1.0;
+      if (mode === 'hobby') {
+        audioRef.current.src = "./bgm_hobby.mp3";
+        audioRef.current.volume = 0.3;
+        setVolume(0.3);
+      } else if (mode === 'metaverse') {
+        audioRef.current.src = "./bgm_metaverse.mp3";
+        audioRef.current.volume = 0.5;
+        setVolume(0.5);
+      } else {
+        audioRef.current.src = "./bgm.mp3";
+        audioRef.current.volume = 1.0;
+        setVolume(1.0);
+      }
+
       if (isPlaying) {
-        audioRef.current.play().catch(e => console.log("Auto-play prevented"));
+        audioRef.current.play().catch(e => console.log('Audio play blocked:', e));
       }
     }
   }, [mode]);
 
-  // Auto-play workaround: Browsers block autoplay until user interacts
+  // Attempt autoplay on first user interaction
   useEffect(() => {
     const handleInteraction = () => {
-      if (!hasAutoPlayed.current && audioRef.current) {
-        hasAutoPlayed.current = true;
-        audioRef.current.play().then(() => {
-          setIsPlaying(true);
-        }).catch(() => {
-          // Autoplay was prevented
-        });
+      if (!hasAutoPlayed.current && audioRef.current && !isPlaying) {
+        audioRef.current.play()
+          .then(() => {
+            setIsPlaying(true);
+            hasAutoPlayed.current = true;
+          })
+          .catch(err => console.log("Autoplay blocked:", err));
       }
-      
-      // Clean up listeners after first interaction
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('keydown', handleInteraction);
     };
     
     document.addEventListener('click', handleInteraction);
@@ -47,7 +54,7 @@ const MusicPlayer = ({ mode = 'professional' }) => {
   }, []);
 
   const togglePlay = (e) => {
-    e.stopPropagation(); // Mencegah event bocor ke document listener
+    e.stopPropagation(); // Prevent event leak
     
     if (audioRef.current) {
       if (isPlaying) {
@@ -56,31 +63,56 @@ const MusicPlayer = ({ mode = 'professional' }) => {
       } else {
         audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
       }
-      // Jika user ngeklik manual, anggap sudah autoplay agar tidak nyala dua kali
       hasAutoPlayed.current = true; 
     }
   };
 
-  // Repeated text for continuous marquee effect
-  const MarqueeText = () => (
-    <div className="flex gap-16 px-8 whitespace-nowrap font-black text-black text-xl tracking-[0.2em] uppercase">
-      <span>{isPlaying ? '🎵 NOW PLAYING' : '⏸️ PAUSED'}</span>
-      <span>{mode === 'professional' ? 'ACHMAD PAHLEVY PORTFOLIO' : 'ME TIME ARCHIVE'}</span>
-      <span>🎵 {mode === 'professional' ? 'BGM.MP3' : 'BGM_HOBBY.MP3'} 🎵</span>
-      <span>KLIK UNTUK {isPlaying ? 'PAUSE' : 'PLAY'}</span>
-    </div>
-  );
+  const handleVolumeChange = (e) => {
+    const newVol = parseFloat(e.target.value);
+    setVolume(newVol);
+    if (audioRef.current) {
+      audioRef.current.volume = newVol;
+    }
+  };
+
+  const MarqueeText = () => {
+    let modeText = 'ACHMAD PAHLEVY PORTFOLIO';
+    let trackText = 'BGM.MP3';
+    
+    if (mode === 'hobby') {
+      modeText = 'ME TIME ARCHIVE';
+      trackText = 'BGM_HOBBY.MP3';
+    } else if (mode === 'metaverse') {
+      modeText = 'PHANTOM THIEVES ARCHIVE';
+      trackText = 'BGM_METAVERSE.MP3';
+    }
+
+    return (
+      <div className="flex gap-16 px-8 whitespace-nowrap font-black text-black text-xl tracking-[0.2em] uppercase">
+        <span>{isPlaying ? '🎵 NOW PLAYING' : '⏸️ PAUSED'}</span>
+        <span>{modeText}</span>
+        <span>🎵 {trackText} 🎵</span>
+        <span>KLIK UNTUK {isPlaying ? 'PAUSE' : 'PLAY'}</span>
+      </div>
+    );
+  };
 
   // Dynamic styling based on mode
-  const bgClass = mode === 'professional' 
-    ? "bg-[var(--color-persona-yellow)] group-hover:bg-[var(--color-persona-orange)]"
-    : "bg-[#00A8E8] group-hover:bg-white";
-    
-  const accentClass = mode === 'professional' ? "var(--color-persona-yellow)" : "#00A8E8";
+  let bgClass, accentColor;
+  if (mode === 'professional') {
+    bgClass = "bg-[var(--color-persona-yellow)] hover:bg-[var(--color-persona-orange)]";
+    accentColor = "var(--color-persona-yellow)";
+  } else if (mode === 'hobby') {
+    bgClass = "bg-[#00A8E8] hover:bg-white";
+    accentColor = "#00A8E8";
+  } else if (mode === 'metaverse') {
+    bgClass = "bg-[#e50000] hover:bg-white";
+    accentColor = "#e50000";
+  }
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 group">
-      {/* The Angled Background Container - Clickable for Play/Pause */}
+      {/* The Angled Background Container */}
       <div 
         className={`${bgClass} border-b-4 border-black shadow-[0_5px_0px_rgba(0,0,0,1)] transform -skew-x-12 scale-110 -ml-4 w-[110%] py-2 transition-colors duration-300 cursor-pointer overflow-hidden relative`}
         onClick={togglePlay}
@@ -98,29 +130,28 @@ const MusicPlayer = ({ mode = 'professional' }) => {
 
       {/* Volume Control */}
       <div 
-        className={`absolute top-1 right-8 z-50 flex items-center gap-2 bg-black px-3 py-1 border-2 border-white transform rotate-2 hover:rotate-0 transition-transform`}
-        style={{ boxShadow: `3px 3px 0px ${accentClass}` }}
+        className="absolute right-8 top-12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12 bg-black border-4 border-white p-2 flex items-center gap-2"
+        onMouseEnter={() => setShowVolume(true)}
+        onMouseLeave={() => setShowVolume(false)}
         onClick={(e) => e.stopPropagation()}
       >
-        <span className="text-white text-xs font-black uppercase tracking-wider">Vol</span>
+        <span className="text-white font-black italic">VOL</span>
         <input 
           type="range" 
           min="0" 
           max="1" 
           step="0.01" 
-          defaultValue="1"
-          onChange={(e) => {
-            if(audioRef.current) audioRef.current.volume = e.target.value;
-          }}
-          className="w-16 md:w-24 cursor-pointer"
-          style={{ accentColor: accentClass }}
+          value={volume}
+          onChange={handleVolumeChange}
+          className="w-24 cursor-pointer accent-white"
+          style={{ accentColor: accentColor }}
         />
       </div>
 
       <audio 
         ref={audioRef}
         loop 
-        src={currentAudioSrc}
+        preload="auto"
         style={{ display: 'none' }}
       />
     </div>
